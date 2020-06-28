@@ -13,6 +13,11 @@ const routes = [
         path: '/me/groups',
         component: () => import('pages/me/groups.vue'),
         meta: { title: '我的群组' }
+      },
+      {
+        path: '/collection/list',
+        component: () => import('pages/collection/list.vue'),
+        meta: { title: '收集列表' }
       }
     ]
   },
