@@ -15,14 +15,22 @@ export default ({ app, router, store }) => {
     },
     err => {
       if (err.response.data.message) {
-        Notify.create({
-          message: err.response.data.message,
-          color: 'red',
-          icon: 'error',
-          position: 'center'
-        })
         if (err.response.status === 401) {
+          Notify.create({
+            message: '请先登录',
+            color: 'red',
+            icon: 'error',
+            position: 'center'
+          })
           router.push('/login')
+        }
+        if (err.response.status === 500) {
+          Notify.create({
+            message: '服务器异常，请稍后再试',
+            color: 'red',
+            icon: 'error',
+            position: 'center'
+          })
         }
       }
       return Promise.reject(err)

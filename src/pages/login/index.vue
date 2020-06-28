@@ -77,8 +77,8 @@
 </template>
 
 <script>
+
 export default {
-  // name: 'PageName',
   data () {
     return {
       model: {
@@ -90,31 +90,30 @@ export default {
     }
   },
   methods: {
-    handleLogin () {
-      this.btnLoading = true
-      this.$store
-        .dispatch('user/userLogin', this.model)
-        .then(() => {
+    async handleLogin () {
+      try {
+        this.btnLoading = true
+        await this.$store.dispatch('user/userLogin', this.model)
+
+        // 延时一下，为了取到 user/nickname
+        // https://blog.csdn.net/qq_41042845/article/details/98845957
+        setTimeout(() => {
+          const nickname = this.$store.getters['user/nickname']
           this.$q.notify({
-            message: '登录成功',
+            message: `欢迎回来，${nickname}`,
             color: 'positive',
             icon: 'done',
-            position: 'center'
+            position: 'center',
+            timeout: 2000
           })
-          // 跳转到之前的页面或者首页
-          this.$router.push(this.$route.query.redirect || '/').catch(e => {})
-          this.btnLoading = false
-        })
-        .catch(e => {
-          console.log(e)
-          this.$q.notify({
-            message: '登录失败',
-            color: 'negative',
-            icon: 'error',
-            position: 'center'
-          })
-          this.btnLoading = false
-        })
+        }, 500)
+
+        this.$router.push(this.$route.query.redirect || '/').catch(e => {})
+        this.btnLoading = false
+      } catch (error) {
+        console.log(error)
+        this.btnLoading = false
+      }
     }
   }
 }
