@@ -1,0 +1,57 @@
+import getPageTitle from 'src/utils/get-page-title'
+import { getToken } from 'src/utils/auth'
+import { LoadingBar } from 'quasar'
+
+export default ({ router, store }) => {
+  router.beforeEach(async (to, from, next) => {
+    // start progress bar
+    LoadingBar.start()
+    // set page title
+    document.title = getPageTitle(to.meta.title)
+
+    // determine whether the user has logged in
+    const hasToken = getToken()
+
+    if (hasToken) {
+      if (to.path === '/login') {
+        console.log('hasToken')
+        // if is logged in, redirect to the home page
+        next({ path: '/' })
+        LoadingBar.stop()
+      } else {
+        console.log('dd--', to.path)
+        const userlevel = store.getters['user/userlevel']
+        console.log(userlevel)
+        if (userlevel > 0) {
+          next()
+          LoadingBar.stop()
+        } else {
+          try {
+            await store.dispatch('user/getUserInfo')
+            // set the replace: true, so the navigation will not leave a history record
+            next({ ...to, replace: true })
+            LoadingBar.stop()
+          } catch (error) {
+            console.log(error)
+            next(`/login?redirect=${to.path}`)
+            LoadingBar.stop()
+          }
+        }
+      }
+    } else {
+      // 没有token并且不是公开页面就跳转到登录页面
+      if (!to.meta.isPublic) {
+        // 登录后跳转到进入的页面
+        next({ path: '/login', query: { redirect: to.fullPath } })
+        LoadingBar.stop()
+      } else {
+        next()
+        LoadingBar.stop()
+      }
+    }
+  })
+  router.afterEach(() => {
+    // finish progress bar
+    LoadingBar.stop()
+  })
+}

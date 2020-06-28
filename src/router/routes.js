@@ -1,0 +1,34 @@
+const routes = [
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Index.vue'), meta: { title: '工作台' } },
+      {
+        path: '/me',
+        children: [{ path: 'org', component: () => import('pages/me/org.vue') }]
+      }
+    ]
+  },
+
+  {
+    path: '/register',
+    component: () => import('pages/register/index.vue'),
+    meta: { isPublic: true, title: '注册' }
+  },
+
+  {
+    path: '/login',
+    component: () => import('pages/login/index.vue'),
+    meta: { isPublic: true, title: '登录' }
+  },
+
+  // Always leave this as last one,
+  // but you can also remove it
+  {
+    path: '*',
+    component: () => import('pages/Error404.vue')
+  }
+]
+
+export default routes
