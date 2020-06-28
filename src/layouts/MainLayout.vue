@@ -106,7 +106,7 @@
 
           <q-btn dense flat no-wrap>
             <q-avatar rounded size="25px">
-              <img src="~assets/profile1.png" />
+              <img src="~assets/boy-avatar.png" />
             </q-avatar>
             <q-icon name="arrow_drop_down" size="16px" />
 
@@ -144,8 +144,8 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      bordered
-      behavior="mobile"
+      elevated
+      behavior="normal"
       @click="leftDrawerOpen = false"
     >
       <q-scroll-area class="fit">
@@ -162,6 +162,7 @@
             :key="link.text"
             :to="link.to"
             clickable
+            v-ripple.early
             class="GPL__drawer-item"
           >
             <q-item-section avatar>
@@ -179,6 +180,7 @@
             :key="link.text"
             :to="link.to"
             clickable
+            v-ripple.early
             class="GPL__drawer-item"
           >
             <q-item-section avatar>
@@ -196,6 +198,7 @@
             :key="link.text"
             :to="link.to"
             clickable
+            v-ripple.early
             class="GPL__drawer-item"
           >
             <q-item-section avatar>
@@ -211,7 +214,9 @@
 
     <q-footer elevated>
       <q-toolbar>
-        <q-toolbar-title>润鲁收集</q-toolbar-title>
+        <q-toolbar-title class="text-center text-caption">
+          &copy; 2020 · 润鲁收集 · POWERED BY 安润鲁
+          </q-toolbar-title>
       </q-toolbar>
     </q-footer>
 

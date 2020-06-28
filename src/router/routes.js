@@ -8,6 +8,11 @@ const routes = [
         path: '/me/org',
         component: () => import('pages/me/org.vue'),
         meta: { title: '我的组织' }
+      },
+      {
+        path: '/me/groups',
+        component: () => import('pages/me/groups.vue'),
+        meta: { title: '我的群组' }
       }
     ]
   },
