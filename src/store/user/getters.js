@@ -15,6 +15,6 @@ export function nickname (state) {
 export function id (state) {
   return state.id
 }
-export function orId (state) {
+export function orgId (state) {
   return state.orgId
 }

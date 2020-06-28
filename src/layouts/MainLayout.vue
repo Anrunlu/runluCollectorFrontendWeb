@@ -114,7 +114,9 @@
               <q-list dense>
                 <q-item class="GPL__menu-link-signed-in">
                   <q-item-section>
-                    <div><strong>{{$store.getters['user/nickname']}}</strong></div>
+                    <div>
+                      <strong>{{ $store.getters["user/nickname"] }}</strong>
+                    </div>
                   </q-item-section>
                 </q-item>
                 <q-separator />

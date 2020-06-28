@@ -5,8 +5,9 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue'), meta: { title: '工作台' } },
       {
-        path: '/me',
-        children: [{ path: 'org', component: () => import('pages/me/org.vue') }]
+        path: '/me/org',
+        component: () => import('pages/me/org.vue'),
+        meta: { title: '我的组织' }
       }
     ]
   },
