@@ -3,7 +3,7 @@ import { Cookies } from 'quasar'
 const TokenKey = 'runluCollecting_token'
 
 export function getToken () {
-  return Cookies.get(TokenKey)
+  return Cookies.get(TokenKey) || ''
 }
 
 export function setToken (token) {

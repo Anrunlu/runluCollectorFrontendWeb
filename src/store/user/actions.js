@@ -1,5 +1,5 @@
 import { login, getInfo } from '../../api/user'
-import { setToken } from '../../utils/auth'
+import { setToken, removeToken } from '../../utils/auth'
 
 export function userLogin ({ commit }, userInfo) {
   const { email, password } = userInfo
@@ -28,5 +28,13 @@ export function getUserInfo ({ commit }, state) {
     }).catch(error => {
       reject(error)
     })
+  })
+}
+
+export function userLogout ({ commit }, state) {
+  return new Promise((resolve, reject) => {
+    removeToken()
+    commit('RESET_STATE')
+    resolve()
   })
 }

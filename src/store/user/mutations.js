@@ -11,7 +11,7 @@ function getDefaultState () {
   }
 }
 
-export function RESET_TOKEN (state) {
+export function RESET_STATE (state) {
   Object.assign(state, getDefaultState())
 }
 

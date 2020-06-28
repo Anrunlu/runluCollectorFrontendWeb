@@ -5,3 +5,16 @@ export function token (state) {
 export function userlevel (state) {
   return state.userlevel
 }
+
+export function username (state) {
+  return state.username
+}
+export function nickname (state) {
+  return state.nickname
+}
+export function id (state) {
+  return state.id
+}
+export function orId (state) {
+  return state.orgId
+}
