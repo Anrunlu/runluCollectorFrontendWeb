@@ -7,7 +7,7 @@ export const http = axios.create({
   timeout: 50000
 })
 
-export default async ({ app, router, store }) => {
+export default ({ app, router, store }) => {
   // response interceptor
   http.interceptors.response.use(
     res => {
