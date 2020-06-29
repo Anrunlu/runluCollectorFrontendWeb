@@ -236,7 +236,7 @@ export default {
       leftDrawerOpen: false,
       search: '',
       links1: [
-        { icon: 'topic', text: '收集列表', to: '/collection/list' },
+        { icon: 'topic', text: '任务列表', to: '/collection/list' },
         {
           icon: 'create_new_folder',
           text: '创建收集',

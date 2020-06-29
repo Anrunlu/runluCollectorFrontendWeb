@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-sm q-pt-md">
     <q-table
-      title="收集列表"
+      title="任务列表"
       :data="data"
       :hide-header="mode === 'grid'"
       :columns="columns"
@@ -65,7 +65,9 @@
           @click="
             mode = mode === 'grid' ? 'list' : 'grid';
             separator = mode === 'grid' ? 'none' : 'horizontal';
-            mode==='grid'?visibleColumns.pop():visibleColumns.push('groups')
+            mode === 'grid'
+              ? visibleColumns.pop()
+              : visibleColumns.push('groups');
           "
           v-if="!props.inFullscreen"
         >
@@ -199,7 +201,14 @@ export default {
       customer: {},
       new_customer: false,
       mode: 'list',
-      visibleColumns: ['title', 'creator', 'status', 'end_date', 'groups'],
+      visibleColumns: [
+        'title',
+        'creator',
+        'status',
+        'end_date',
+        'property',
+        'groups'
+      ],
       columns: [
         {
           name: 'title',
@@ -265,7 +274,7 @@ export default {
         cltInfo.creator = curr.creator.nickname
         cltInfo.groups = curr.groups
 
-        const diff = date.getDateDiff(Date.now(), curr.end_time, 'hours')
+        const diff = date.getDateDiff(Date.now(), curr.endtime, 'hours')
         if (diff > 1) {
           cltInfo.status = '进行中'
         } else if (diff > 0) {
