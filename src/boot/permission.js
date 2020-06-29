@@ -14,14 +14,11 @@ export default ({ router, store }) => {
 
     if (hasToken) {
       if (to.path === '/login') {
-        console.log('hasToken')
         // if is logged in, redirect to the home page
         next({ path: '/' })
         LoadingBar.stop()
       } else {
-        console.log('dd--', to.path)
         const userlevel = store.getters['user/userlevel']
-        console.log(userlevel)
         if (userlevel > 0) {
           next()
           LoadingBar.stop()

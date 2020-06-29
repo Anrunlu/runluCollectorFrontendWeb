@@ -41,7 +41,6 @@ export default ({ app, router, store }) => {
   http.interceptors.request.use(
     config => {
     // do something before request is sent
-      console.log('axios', store.getters['user/token'])
 
       if (store.getters['user/token']) {
       // let each request carry token

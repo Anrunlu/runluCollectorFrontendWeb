@@ -8,9 +8,15 @@ export function getOrgList () {
 }
 
 export function getOrgDetail (id) {
-  console.log('in http')
   return request({
     url: `/query/org/${id}`,
+    method: 'get'
+  })
+}
+
+export function getMyTasks () {
+  return request({
+    url: '/query/tasklist',
     method: 'get'
   })
 }
