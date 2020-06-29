@@ -48,6 +48,10 @@
             v-model="model.groups"
             multiple
             :options="groups"
+            option-label="name"
+            option-value="id"
+            emit-value
+            map-options
             use-chips
             label="选择群组"
           >
@@ -74,12 +78,12 @@
             label="截止时间"
             class="col-md-5 col-11"
             standout="bg-primary text-white"
-            v-model="model.endtime"
+            v-model="pickedtime"
           >
             <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-date v-model="model.endtime" mask="YYYY-MM-DD HH:mm" />
+                  <q-date v-model="pickedtime" mask="YYYY-MM-DD HH:mm" />
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -88,7 +92,7 @@
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
                   <q-time
-                    v-model="model.endtime"
+                    v-model="pickedtime"
                     mask="YYYY-MM-DD HH:mm"
                     format24h
                   />
@@ -143,6 +147,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+// import { createCollection } from 'src/api/collection'
+import { getMyAccessableGroups } from 'src/api/query'
 export default {
   computed: {
     ...mapGetters({
@@ -154,13 +160,17 @@ export default {
   data () {
     return {
       model: {
+        title: '',
         creator: '',
-        org: '',
         property: 'private',
+        org: '',
         description: '',
-        endtime: '2019-02-01 12:44'
+        groups: [],
+        fileformat: [],
+        endtime: ''
       },
-      groups: ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'],
+      pickedtime: '2019-02-01 12:44',
+      groups: [],
       fileformats: ['文档', '图片', '视频', '压缩包', '所有文件'],
       property: [
         { label: '任务收集', value: 'private' },
@@ -168,11 +178,25 @@ export default {
       ]
     }
   },
-  created () {},
+  created () {
+    this.getAccessableGroups()
+  },
   methods: {
-    onSubmit () {
+    async getAccessableGroups () {
+      const { data } = await getMyAccessableGroups()
+      this.groups = data
+      console.log(data)
+    },
+    async onSubmit () {
       this.model.creator = this.userId
       this.model.org = this.orgId
+      this.model.endtime = Date(this.pickedtime)
+      this.model.firetime = Date.now()
+      // const res = await createCollection(this.model)
+      this.$q.loading.show({
+        message: '正在创建...'
+      })
+      console.log(this.model)
     }
   }
 }

@@ -20,3 +20,10 @@ export function getMyTasks () {
     method: 'get'
   })
 }
+
+export function getMyAccessableGroups () {
+  return request({
+    url: '/query/myAccessableGroups',
+    method: 'get'
+  })
+}

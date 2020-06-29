@@ -1,6 +1,4 @@
-import { http } from '../../boot/axios'
-
-const request = http
+import { http as request } from '../../boot/axios'
 
 export function register (userRegisterDto) {
   return request({

@@ -26,6 +26,8 @@
                 :options="orgOptions"
                 option-label="name"
                 option-value="id"
+                emit-value
+                map-options
                 label="组织 *"
                 icon
                 hint="填写组织"
