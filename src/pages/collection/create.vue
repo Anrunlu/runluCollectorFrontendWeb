@@ -30,7 +30,7 @@
       <q-separator inset />
 
       <q-card-section>
-        <q-form @submit="onSubmit" class="q-gutter-md row justify-center">
+        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md row justify-center">
           <q-input
             standout="bg-primary text-white"
             v-model="model.title"
@@ -75,7 +75,7 @@
           </q-select>
 
           <q-input
-            label="截止时间"
+            label="截止时间(点击两侧图标选择时间)"
             class="col-md-5 col-11"
             standout="bg-primary text-white"
             v-model="pickedtime"
@@ -130,6 +130,7 @@
               label="确认创建收集"
               type="submit"
               color="primary"
+              :loading="loadingBtn"
             />
             <q-btn
               label="重置"
@@ -147,7 +148,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import { createCollection } from 'src/api/collection'
+import { createCollection } from 'src/api/collection'
 import { getMyAccessableGroups } from 'src/api/query'
 export default {
   computed: {
@@ -159,6 +160,7 @@ export default {
   },
   data () {
     return {
+      loadingBtn: false,
       model: {
         title: '',
         creator: '',
@@ -169,7 +171,7 @@ export default {
         fileformat: [],
         endtime: ''
       },
-      pickedtime: '2019-02-01 12:44',
+      pickedtime: '',
       groups: [],
       fileformats: ['文档', '图片', '视频', '压缩包', '所有文件'],
       property: [
@@ -185,18 +187,46 @@ export default {
     async getAccessableGroups () {
       const { data } = await getMyAccessableGroups()
       this.groups = data
-      console.log(data)
     },
     async onSubmit () {
       this.model.creator = this.userId
       this.model.org = this.orgId
-      this.model.endtime = Date(this.pickedtime)
+      this.model.endtime = new Date(this.pickedtime)
       this.model.firetime = Date.now()
-      // const res = await createCollection(this.model)
+
+      this.loadingBtn = true
       this.$q.loading.show({
         message: '正在创建...'
       })
-      console.log(this.model)
+      try {
+        await createCollection(this.model)
+        this.loadingBtn = false
+        this.$q.loading.hide()
+        this.$q.notify({
+          message: '创建成功',
+          color: 'positive',
+          icon: 'done',
+          position: 'center',
+          timeout: 2000
+        })
+        this.$router.replace('/collections/myTasks')
+      } catch (error) {
+        this.loadingBtn = false
+        this.$q.notify({
+          message: '创建失败，请稍后再试',
+          color: 'red',
+          icon: 'error',
+          position: 'center',
+          timeout: 2000
+        })
+      }
+    },
+    onReset () {
+      this.model.title = ''
+      this.model.description = ''
+      this.model.groups = []
+      this.model.fileformat = []
+      this.pickedtime = ''
     }
   }
 }

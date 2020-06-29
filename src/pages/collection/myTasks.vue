@@ -12,21 +12,16 @@
       :pagination.sync="pagination"
       :loading="loading"
       rows-per-page-label="单页条目数"
+      no-data-label="I didn't find anything for you"
     >
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>
 
-      <template v-slot:top>
-        <q-chip
-            square
-            color="green"
-            size="lg"
-            text-color="white"
-            icon="topic"
-          >
-            任务列表
-          </q-chip>
+      <template v-slot:top-left>
+        <q-chip square color="green" size="lg" text-color="white" icon="topic">
+          任务列表
+        </q-chip>
       </template>
 
       <template v-slot:top-right="props">
@@ -124,82 +119,15 @@
           >
         </q-td>
       </template>
-    </q-table>
-    <q-dialog v-model="new_customer">
-      <q-card style="width: 600px; max-width: 60vw;">
-        <q-card-section>
-          <div class="text-h6">
-            Add new change request
-            <q-btn
-              round
-              flat
-              dense
-              icon="close"
-              class="float-right"
-              color="grey-8"
-              v-close-popup
-            ></q-btn>
-          </div>
-        </q-card-section>
-        <q-separator inset></q-separator>
-        <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
-            <q-list>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Change Name</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="customer.name"
-                    label="Change Name"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Change Type</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="customer.change_type"
-                    label="Change Type"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs"
-                    >New Address Information</q-item-label
-                  >
-                  <q-input
-                    dense
-                    outlined
-                    v-model="customer.new_address"
-                    label="New Address Information"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Status</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="customer.status"
-                    label="Status"
-                  />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-form>
-        </q-card-section>
 
-        <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn label="Save" type="submit" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+      <template v-slot:no-data="">
+        <div class="full-width row flex-center text-grey q-gutter-sm">
+          <span class="text-h6">
+            暂无数据
+          </span>
+        </div>
+      </template>
+    </q-table>
   </q-page>
 </template>
 
@@ -287,7 +215,7 @@ export default {
         cltInfo.creator = curr.creator.nickname
         cltInfo.groups = curr.groups
 
-        const diff = date.getDateDiff(Date.now(), curr.endtime, 'hours')
+        const diff = date.getDateDiff(curr.endtime, Date.now(), 'hours')
         if (diff > 1) {
           cltInfo.status = '进行中'
         } else if (diff > 0) {
