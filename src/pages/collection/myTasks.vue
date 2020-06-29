@@ -16,6 +16,19 @@
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>
+
+      <template v-slot:top>
+        <q-chip
+            square
+            color="green"
+            size="lg"
+            text-color="white"
+            icon="topic"
+          >
+            任务列表
+          </q-chip>
+      </template>
+
       <template v-slot:top-right="props">
         <!-- <q-btn @click="new_customer=true" outline color="primary" label="Add New" class="q-mr-xs" /> -->
 

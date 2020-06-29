@@ -15,8 +15,13 @@ const routes = [
         meta: { title: '我的群组' }
       },
       {
-        path: '/collection/list',
-        component: () => import('pages/collection/list.vue'),
+        path: '/collections/myTasks',
+        component: () => import('pages/collection/myTasks.vue'),
+        meta: { title: '收集列表' }
+      },
+      {
+        path: '/collections/create',
+        component: () => import('pages/collection/create.vue'),
         meta: { title: '收集列表' }
       }
     ]

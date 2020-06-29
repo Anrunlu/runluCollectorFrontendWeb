@@ -236,11 +236,11 @@ export default {
       leftDrawerOpen: false,
       search: '',
       links1: [
-        { icon: 'topic', text: '任务列表', to: '/collection/list' },
+        { icon: 'topic', text: '任务列表', to: '/collections/myTasks' },
         {
           icon: 'create_new_folder',
           text: '创建收集',
-          to: '/collection/create'
+          to: '/collections/create'
         }
       ],
       links2: [
@@ -252,8 +252,8 @@ export default {
       links3: [
         { icon: 'notifications', text: '消息中心', to: '/me/notifications' },
         { icon: 'settings', text: '个人设置', to: '/me/settings' },
-        { icon: 'help', text: '帮助与反馈', to: '/faceback' },
-        { icon: 'get_app', text: '客户端下载', to: '/' }
+        { icon: 'help', text: '帮助与反馈', to: '/faceback' }
+        // { icon: 'get_app', text: '客户端下载', to: '/' }
       ],
       createMenu: [
         { icon: 'create_new_folder', text: '收集' },
