@@ -12,7 +12,8 @@
       :pagination.sync="pagination"
       :loading="loading"
       rows-per-page-label="单页条目数"
-      no-data-label="I didn't find anything for you"
+      no-data-label="暂无任务"
+      @row-click="rowClick"
     >
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
@@ -229,6 +230,10 @@ export default {
         return pre
       }, newData)
       this.data = newData
+    },
+    rowClick (evt, row) {
+      console.log(row)
+      this.$router.push(`/collections/edit/${row.id}`)
     }
   }
 }

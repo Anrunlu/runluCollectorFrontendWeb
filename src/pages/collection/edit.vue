@@ -1,18 +1,19 @@
 <template>
   <q-page class="q-pa-sm q-pt-md">
-    <EditCollection :mode="mode"></EditCollection>
+    <EditCollection :mode="mode" :id="id"></EditCollection>
   </q-page>
 </template>
 
 <script>
 import EditCollection from 'components/EditCollection'
 export default {
+  props: ['id'],
   components: {
     EditCollection
   },
   data () {
     return {
-      mode: 'create'
+      mode: 'edit'
     }
   }
 }

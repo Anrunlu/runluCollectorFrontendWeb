@@ -22,7 +22,13 @@ const routes = [
       {
         path: '/collections/create',
         component: () => import('pages/collection/create.vue'),
-        meta: { title: '收集列表' }
+        meta: { title: '创建收集' }
+      },
+      {
+        path: '/collections/edit/:id',
+        component: () => import('pages/collection/edit.vue'),
+        props: true,
+        meta: { title: '修改收集' }
       }
     ]
   },
