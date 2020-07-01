@@ -7,10 +7,11 @@ export function getMyCollections () {
   })
 }
 
-export function getCollectionInfo (id) {
+export function getCollectionInfo (id, params) {
   return request({
     url: `/collections/${id}`,
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 
@@ -27,5 +28,12 @@ export function updateCollection (id, collectionUpdateDto) {
     url: `/collections/${id}`,
     method: 'put',
     data: collectionUpdateDto
+  })
+}
+
+export function deleteCollection (id) {
+  return request({
+    url: `/collections/${id}`,
+    method: 'delete'
   })
 }

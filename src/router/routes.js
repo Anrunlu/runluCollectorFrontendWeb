@@ -15,9 +15,15 @@ const routes = [
         meta: { title: '我的群组' }
       },
       {
+        path: '/me/collections',
+        component: () => import('pages/collection/myCollections.vue'),
+        props: true,
+        meta: { title: '我的收集' }
+      },
+      {
         path: '/collections/myTasks',
         component: () => import('pages/collection/myTasks.vue'),
-        meta: { title: '收集列表' }
+        meta: { title: '我的任务' }
       },
       {
         path: '/collections/create',
@@ -29,6 +35,12 @@ const routes = [
         component: () => import('pages/collection/edit.vue'),
         props: true,
         meta: { title: '修改收集' }
+      },
+      {
+        path: '/collections/:id',
+        component: () => import('pages/collection/view.vue'),
+        props: true,
+        meta: { title: '查看收集' }
       }
     ]
   },

@@ -198,7 +198,6 @@ export default {
     }
   },
   created () {
-    console.log(this.mode, this.id)
     this.fetchData()
   },
   methods: {
@@ -241,7 +240,7 @@ export default {
             position: 'center',
             timeout: 2000
           })
-          this.$router.replace('/collections/myTasks')
+          this.$router.replace('/me/collections')
         } catch (error) {
           this.loadingBtn = false
           this.$q.loading.hide()
@@ -283,7 +282,7 @@ export default {
             timeout: 2000
           })
           this.fetchData()
-          // this.$router.replace('/collections/myTasks')
+          this.$router.replace('/me/collections')
         } catch (error) {
           this.loadingBtn = false
           this.$q.loading.hide()
