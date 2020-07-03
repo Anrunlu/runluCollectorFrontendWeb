@@ -48,7 +48,14 @@
         <q-card class="my-card upload-card q-mt-md">
           <q-card-section>文件上传区域</q-card-section>
           <q-card-section
-            ><q-file v-model="file" label="选择或拖拽文件于此" outlined rounded use-chips counter>
+            ><q-file
+              v-model="file"
+              label="选择或拖拽文件于此"
+              outlined
+              rounded
+              use-chips
+              counter
+            >
               <template v-slot:prepend>
                 <q-icon name="attach_file" />
               </template> </q-file
@@ -86,7 +93,12 @@
       </div>
 
       <q-card class="my-card col-md-3 desktop-only">
-        <q-card-section>已提交名单</q-card-section>
+        <q-table
+          title="已提交名单"
+          :data="subdata"
+          :columns="columns"
+          row-key="name"
+        />
       </q-card>
     </div>
   </q-page>
@@ -99,6 +111,23 @@ export default {
   props: ['id'],
   data () {
     return {
+      columns: [
+        {
+          name: 'name',
+          required: true,
+          label: '姓名',
+          align: 'left',
+          field: row => row.name,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'subtime', align: 'center', label: '时间', field: 'subtime', sortable: true }
+      ],
+      subdata: [
+        { name: '张三', subtime: '07/02 20:33' },
+        { name: '李四', subtime: '07/02 20:34' },
+        { name: '王五', subtime: '07/02 20:35' }
+      ],
       btnLoading: false,
       progress: 0.33,
       file: null,
@@ -133,7 +162,7 @@ export default {
 }
 </script>
 <style scoped>
-.content-card{
+/* .content-card{
   border:1px solid rgb(39, 172, 39)
-}
+} */
 </style>

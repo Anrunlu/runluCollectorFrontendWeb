@@ -261,17 +261,15 @@ export default {
           description: this.model.description,
           groups: this.model.groups,
           fileformat: this.model.fileformat,
-          endtime: this.model.endtime
+          endtime: new Date(this.pickedtime)
         }
-
-        console.log(payload)
 
         this.loadingBtn = true
         this.$q.loading.show({
           message: '保存中...'
         })
         try {
-          await updateCollection(this.id, this.model)
+          await updateCollection(this.id, payload)
           this.loadingBtn = false
           this.$q.loading.hide()
           this.$q.notify({
