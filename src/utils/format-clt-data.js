@@ -38,6 +38,10 @@ export function formatSingleCltDetail (cltData) {
   newData.end_time = date.formatDate(cltData.endtime, 'MM/DD HH:mm')
   newData.property = cltData.property === 'private' ? '提交任务' : '公开征集'
   newData.fileformat = cltData.fileformat.map((item) => item[0])
-  newData.groups = cltData.groups.map((item) => item.name)
+  newData.groups = cltData.groups.map((group) => group.name)
+  newData.posts = cltData.posts.map((post) => {
+    const subtime = date.formatDate(post.updatedAt, 'MM/DD HH:mm')
+    return { submitter: post.creator.nickname, subtime: subtime }
+  })
   return newData
 }

@@ -139,7 +139,6 @@ export default {
   },
   methods: {
     rowClick (evt, row) {
-      console.log(row)
       this.$router.push(`/collections/${row.id}`)
     }
   }

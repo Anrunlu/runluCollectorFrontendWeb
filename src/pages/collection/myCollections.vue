@@ -86,7 +86,7 @@
             text-color="white"
             dense
             square
-            :icon="props.row.property == '提交任务' ? 'flag' : 'assignment'"
+            :icon="props.row.property == '提交任务' ? 'flag' : 'how_to_vote'"
             >{{ props.row.property }}</q-chip
           >
         </q-td>

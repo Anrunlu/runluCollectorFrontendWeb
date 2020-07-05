@@ -66,6 +66,7 @@
               <q-item
                 v-for="menu in createMenu"
                 :key="menu.text"
+                :to="menu.to"
                 clickable
                 v-close-popup
                 aria-hidden="true"
@@ -256,7 +257,7 @@ export default {
         // { icon: 'get_app', text: '客户端下载', to: '/' }
       ],
       createMenu: [
-        { icon: 'create_new_folder', text: '收集' },
+        { icon: 'create_new_folder', text: '收集', to: '/collections/create' },
         { icon: 'group_add', text: '群组' }
       ]
     }

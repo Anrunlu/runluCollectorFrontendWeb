@@ -167,6 +167,7 @@ import {
 import { getMyAccessableGroups } from 'src/api/query'
 import { date } from 'quasar'
 export default {
+  name: 'EditCollection',
   props: ['mode', 'id'],
   computed: {
     ...mapGetters({

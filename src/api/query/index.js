@@ -27,3 +27,11 @@ export function getMyAccessableGroups () {
     method: 'get'
   })
 }
+
+export function isSubmitted (cltId) {
+  return request({
+    url: '/query/isSubmitted',
+    method: 'get',
+    params: { cltId: cltId }
+  })
+}

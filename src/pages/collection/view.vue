@@ -4,7 +4,11 @@
       <div class="col-md-8 col-11">
         <q-card class="my-card content-card">
           <q-card-section>
-            <div class="text-h5">{{ cltDetail.title }}</div>
+            <q-chip square size="md">
+              <q-avatar :icon="cltDetail.property==='提交任务'?'flag':'how_to_vote'" color="primary" text-color="white" />
+              {{ cltDetail.title }}
+            </q-chip>
+            <q-space />
             <q-chip class="q-mt-md" size="sm" outline color="purple">
               <q-avatar icon="person" color="purple" text-color="white" />
               {{ cltDetail.creator }}
@@ -17,7 +21,7 @@
               icon="event"
               size="sm"
             >
-              创建时间：{{ cltDetail.create_time }}
+              发布时间：{{ cltDetail.create_time }}
             </q-chip>
             <q-chip class="q-mt-md" size="sm" clickable>
               <q-avatar color="green" text-color="white">50</q-avatar>
@@ -27,7 +31,7 @@
 
           <q-separator inset />
 
-          <q-card-section v-html="cltDetail.description"> </q-card-section>
+          <q-card-section class="content" v-html="cltDetail.description"> </q-card-section>
 
           <q-separator inset />
 
@@ -42,105 +46,86 @@
             >
               截止时间：{{ cltDetail.end_time }}
             </q-chip>
+            <q-chip
+              square
+              :color="mySubStatus ? 'positive' : 'negative'"
+              text-color="white"
+              :icon="mySubStatus ? 'done' : 'report'"
+              size="sm"
+            >
+              {{
+                mySubStatus
+                  ? `您最后提交于：${mySubmittedPost.updatedAt}`
+                  : "您尚未上传文件"
+              }}
+            </q-chip>
           </q-card-section>
         </q-card>
 
-        <q-card class="my-card upload-card q-mt-md">
-          <q-card-section>文件上传区域</q-card-section>
-          <q-card-section
-            ><q-file
-              v-model="file"
-              label="选择或拖拽文件于此"
-              outlined
-              rounded
-              use-chips
-              counter
-            >
-              <template v-slot:prepend>
-                <q-icon name="attach_file" />
-              </template> </q-file
-          ></q-card-section>
-          <q-card-section>
-            <q-btn
-              class="full-width"
-              color="green"
-              outline
-              :loading="btnLoading"
-              icon="cloud_upload"
-              label="提交文件"
-              @click="onClickSubmitFile"
-            >
-              <template v-slot:loading>
-                <q-linear-progress
-                  stripe
-                  size="35px"
-                  :value="progress"
-                  track-color="white"
-                  color="green"
-                >
-                  <div class="absolute-full flex flex-center">
-                    <q-badge
-                      color="accent"
-                      text-color="white"
-                      :label="progressLabel"
-                    />
-                  </div>
-                </q-linear-progress>
-              </template>
-            </q-btn>
-          </q-card-section>
-        </q-card>
+        <PostUploader
+          class="my-card upload-card q-mt-md"
+          :cltId="cltDetail.id"
+          :fileformats="cltDetail.fileformat"
+          @fetchReq="fetch"
+        />
       </div>
 
       <q-card class="my-card col-md-3 desktop-only">
         <q-table
           title="已提交名单"
-          :data="subdata"
+          :data="cltDetail.posts"
           :columns="columns"
           row-key="name"
+          :pagination.sync="pagination"
         />
       </q-card>
     </div>
   </q-page>
 </template>
 <script>
+import { isSubmitted } from 'src/api/query'
 import { getCollectionInfo } from 'src/api/collection'
 import { formatSingleCltDetail } from 'src/utils/format-clt-data'
+import { formatSinglePostDetail } from 'src/utils/format-post-data'
+import PostUploader from 'components/PostUploader'
 
 export default {
   props: ['id'],
+  components: {
+    PostUploader
+  },
   data () {
     return {
       columns: [
         {
-          name: 'name',
+          name: 'submitter',
           required: true,
           label: '姓名',
           align: 'left',
-          field: row => row.name,
+          field: row => row.submitter,
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'subtime', align: 'center', label: '时间', field: 'subtime', sortable: true }
+        {
+          name: 'subtime',
+          align: 'center',
+          label: '时间',
+          field: 'subtime',
+          sortable: true
+        }
       ],
-      subdata: [
-        { name: '张三', subtime: '07/02 20:33' },
-        { name: '李四', subtime: '07/02 20:34' },
-        { name: '王五', subtime: '07/02 20:35' }
-      ],
-      btnLoading: false,
-      progress: 0.33,
-      file: null,
-      cltDetail: {}
+      pagination: {
+        sortBy: 'subtime',
+        descending: false,
+        rowsPerPage: 10
+      },
+      cltDetail: {},
+      mySubStatus: false,
+      mySubmittedPost: {}
     }
   },
   created () {
     this.fetch()
-  },
-  computed: {
-    progressLabel () {
-      return (this.progress * 100).toFixed(2) + '%'
-    }
   },
   methods: {
     async fetch () {
@@ -149,14 +134,15 @@ export default {
       })
       const { data } = await getCollectionInfo(this.id, { mode: 'detail' })
       this.cltDetail = formatSingleCltDetail(data)
+      const { data: mySubInfo } = await isSubmitted(this.id)
+      this.mySubStatus = mySubInfo.submitted
+      if (this.mySubStatus) {
+        this.mySubmittedPost = formatSinglePostDetail(mySubInfo.post)
+      }
+
       console.log(this.cltDetail)
+      console.log(this.mySubmittedPost)
       this.$q.loading.hide()
-    },
-    onClickSubmitFile () {
-      this.btnLoading = true
-      setTimeout(() => {
-        this.btnLoading = false
-      }, 2000)
     }
   }
 }
@@ -165,4 +151,9 @@ export default {
 /* .content-card{
   border:1px solid rgb(39, 172, 39)
 } */
+.content{
+  min-height: 10rem;
+  max-height: 25rem;
+  overflow: auto;
+}
 </style>
