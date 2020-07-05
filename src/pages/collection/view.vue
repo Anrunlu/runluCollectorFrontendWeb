@@ -5,7 +5,13 @@
         <q-card class="my-card content-card">
           <q-card-section>
             <q-chip square size="md">
-              <q-avatar :icon="cltDetail.property==='提交任务'?'flag':'how_to_vote'" color="primary" text-color="white" />
+              <q-avatar
+                :icon="
+                  cltDetail.property === '提交任务' ? 'flag' : 'how_to_vote'
+                "
+                color="primary"
+                text-color="white"
+              />
               {{ cltDetail.title }}
             </q-chip>
             <q-space />
@@ -23,15 +29,23 @@
             >
               发布时间：{{ cltDetail.create_time }}
             </q-chip>
-            <q-chip class="q-mt-md" size="sm" clickable>
-              <q-avatar color="green" text-color="white">50</q-avatar>
+            <q-chip
+              class="q-mt-md mobile-only"
+              size="sm"
+              clickable
+              @click="showSubTable = !showSubTable"
+            >
+              <q-avatar color="green" text-color="white">{{
+                cltDetail.posts.length
+              }}</q-avatar>
               已提交人数
             </q-chip>
           </q-card-section>
 
           <q-separator inset />
 
-          <q-card-section class="content" v-html="cltDetail.description"> </q-card-section>
+          <q-card-section class="content" v-html="cltDetail.description">
+          </q-card-section>
 
           <q-separator inset />
 
@@ -48,11 +62,19 @@
             </q-chip>
             <q-chip
               square
-              :color="mySubStatus ? 'positive' : 'negative'"
-              text-color="white"
-              :icon="mySubStatus ? 'done' : 'report'"
               size="sm"
+              clickable
+              @click="
+                mySubStatus
+                  ? (showSubInfo = !showSubInfo)
+                  : (showSubInfo = false)
+              "
             >
+              <q-avatar
+                :color="mySubStatus ? 'positive' : 'negative'"
+                text-color="white"
+                :icon="mySubStatus ? 'done' : 'report'"
+              />
               {{
                 mySubStatus
                   ? `您最后提交于：${mySubmittedPost.updatedAt}`
@@ -71,14 +93,47 @@
       </div>
 
       <q-card class="my-card col-md-3 desktop-only">
-        <q-table
-          title="已提交名单"
-          :data="cltDetail.posts"
-          :columns="columns"
-          row-key="name"
-          :pagination.sync="pagination"
-        />
+        <SubInfoTable :posts="cltDetail.posts" />
       </q-card>
+
+      <q-dialog v-model="showSubTable">
+        <q-card class="my-card" style="width: 300px">
+          <SubInfoTable :posts="cltDetail.posts" />
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="showSubInfo">
+        <q-card class="my-card" style="width: 300px">
+          <q-card-section>
+            提交详情
+          </q-card-section>
+          <q-list bordered separator>
+            <q-item v-ripple>
+              <q-item-section>
+                <q-item-label caption>文件名</q-item-label>
+                <q-item-label>{{ mySubmittedPost.origname }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-ripple>
+              <q-item-section>
+                <q-item-label caption>文件类型</q-item-label>
+                <q-item-label>{{ mySubmittedPost.filetype }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-ripple>
+              <q-item-section>
+                <q-item-label caption>最后提交时间</q-item-label>
+                <q-item-label>{{ mySubmittedPost.updatedAt }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <q-card-actions vertical align="center">
+            <a href="https://anrunlu.net"
+              ><q-btn flat color="primary" icon="get_app" label="下载文件"
+            /></a>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -88,37 +143,18 @@ import { getCollectionInfo } from 'src/api/collection'
 import { formatSingleCltDetail } from 'src/utils/format-clt-data'
 import { formatSinglePostDetail } from 'src/utils/format-post-data'
 import PostUploader from 'components/PostUploader'
+import SubInfoTable from 'components/SubInfoTable'
 
 export default {
   props: ['id'],
   components: {
-    PostUploader
+    PostUploader,
+    SubInfoTable
   },
   data () {
     return {
-      columns: [
-        {
-          name: 'submitter',
-          required: true,
-          label: '姓名',
-          align: 'left',
-          field: row => row.submitter,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: 'subtime',
-          align: 'center',
-          label: '时间',
-          field: 'subtime',
-          sortable: true
-        }
-      ],
-      pagination: {
-        sortBy: 'subtime',
-        descending: false,
-        rowsPerPage: 10
-      },
+      showSubTable: false,
+      showSubInfo: false,
       cltDetail: {},
       mySubStatus: false,
       mySubmittedPost: {}
@@ -151,7 +187,10 @@ export default {
 /* .content-card{
   border:1px solid rgb(39, 172, 39)
 } */
-.content{
+a {
+  text-decoration: none;
+}
+.content {
   min-height: 10rem;
   max-height: 25rem;
   overflow: auto;
