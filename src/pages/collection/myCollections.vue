@@ -131,12 +131,24 @@
         <q-td :props="props">
           <div class="q-gutter-sm">
             <q-btn
+              flat
+              round
+              dense
+              color="secondary"
+              :to="`/collections/${props.row.id}`"
+              icon="find_in_page"
+            />
+            <q-btn
+              flat
+              round
               dense
               color="primary"
               :to="`/collections/edit/${props.row.id}`"
               icon="edit"
             />
             <q-btn
+              flat
+              round
               dense
               color="red"
               icon="delete"
@@ -185,42 +197,42 @@ export default {
         },
         {
           name: 'property',
-          align: 'left',
+          align: 'center',
           label: '收集类型',
           field: 'property',
           sortable: true
         },
         {
           name: 'groups',
-          align: 'left',
+          align: 'center',
           label: '所属群组',
           field: 'groups',
           sortable: true
         },
         {
           name: 'create_time',
-          align: 'left',
+          align: 'center',
           label: '创建时间',
           field: 'create_time',
           sortable: true
         },
         {
           name: 'end_time',
-          align: 'left',
+          align: 'center',
           label: '截止时间',
           field: 'end_time',
           sortable: true
         },
         {
           name: 'status',
-          align: 'left',
+          align: 'center',
           label: '进行状态',
           field: 'status',
           sortable: true
         },
         {
           name: 'action',
-          align: 'left',
+          align: 'center',
           label: '操作',
           field: 'action',
           sortable: true
@@ -285,7 +297,7 @@ export default {
         })
     },
     rowClick (evt, row) {
-      console.log(row)
+      this.$router.push(`/collections/subInfo/${row.id}`)
     }
   }
 }

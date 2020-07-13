@@ -41,6 +41,12 @@ const routes = [
         component: () => import('pages/collection/view.vue'),
         props: true,
         meta: { title: '查看收集' }
+      },
+      {
+        path: '/collections/subInfo/:id',
+        component: () => import('pages/collection/cltSubInfo.vue'),
+        props: true,
+        meta: { title: '提交详情' }
       }
     ]
   },

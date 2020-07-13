@@ -120,7 +120,7 @@ export default {
       }
     },
     async reUpload (postId) {
-      // 删除之前的文件
+      // 从七牛存储删除之前的文件
       // 调用七牛上传
       // 同步数据到数据库
       const post = {

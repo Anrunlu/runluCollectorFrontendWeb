@@ -155,7 +155,9 @@ export default {
     return {
       showSubTable: false,
       showSubInfo: false,
-      cltDetail: {},
+      cltDetail: {
+        posts: []
+      },
       mySubStatus: false,
       mySubmittedPost: {}
     }

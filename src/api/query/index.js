@@ -35,3 +35,11 @@ export function isSubmitted (cltId) {
     params: { cltId: cltId }
   })
 }
+
+export function getCltSubInfo (cltId, groupId, type) {
+  return request({
+    url: `/query/subInfo/${cltId}`,
+    method: 'get',
+    params: { groupId, type }
+  })
+}
