@@ -238,7 +238,7 @@ export default {
         },
         {
           name: 'origname',
-          align: 'left',
+          align: 'center',
           label: '文件名',
           field: 'origname',
           sortable: true
@@ -268,14 +268,14 @@ export default {
         },
         {
           name: 'nickname',
-          align: 'left',
+          align: 'center',
           label: '姓名',
           field: row => row.nickname,
           sortable: true
         },
         {
           name: 'action',
-          align: 'left',
+          align: 'center',
           label: '操作',
           field: 'action',
           sortable: true
@@ -284,14 +284,14 @@ export default {
       allColumns: [
         {
           name: 'username',
-          align: 'left',
+          align: 'center',
           label: '学号',
           field: row => row.username,
           sortable: true
         },
         {
           name: 'nickname',
-          align: 'left',
+          align: 'center',
           label: '姓名',
           field: row => row.nickname,
           sortable: true

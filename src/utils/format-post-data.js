@@ -5,3 +5,10 @@ export function formatSinglePostDetail (post) {
   post.updatedAt = date.formatDate(post.updatedAt, 'MM/DD HH:mm')
   return post
 }
+
+export function formatPostsDetail (posts) {
+  posts.forEach(post => {
+    formatSinglePostDetail(post)
+  })
+  return posts
+}

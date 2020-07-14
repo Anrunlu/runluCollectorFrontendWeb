@@ -15,6 +15,11 @@ const routes = [
         meta: { title: '我的群组' }
       },
       {
+        path: '/me/posts',
+        component: () => import('pages/me/posts.vue'),
+        meta: { title: '我的文件' }
+      },
+      {
         path: '/me/collections',
         component: () => import('pages/collection/myCollections.vue'),
         props: true,

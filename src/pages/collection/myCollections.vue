@@ -7,7 +7,6 @@
       :columns="columns"
       :visible-columns="visibleColumns"
       row-key="name"
-      :grid="mode == 'grid'"
       :filter="filter"
       :pagination.sync="pagination"
       rows-per-page-label="单页条目数"
@@ -58,24 +57,6 @@
           </q-tooltip>
         </q-btn>
 
-        <q-btn
-          flat
-          round
-          dense
-          :icon="mode === 'grid' ? 'list' : 'grid_on'"
-          @click="
-            mode = mode === 'grid' ? 'list' : 'grid';
-            separator = mode === 'grid' ? 'none' : 'horizontal';
-            mode === 'grid'
-              ? visibleColumns.pop()
-              : visibleColumns.push('groups');
-          "
-          v-if="!props.inFullscreen"
-        >
-          <q-tooltip :disable="$q.platform.is.mobile" v-close-popup>{{
-            mode === "grid" ? "列表显示" : "网格显示"
-          }}</q-tooltip>
-        </q-btn>
       </template>
 
       <template v-slot:body-cell-property="props">
@@ -177,7 +158,6 @@ export default {
     return {
       filter: '',
       loading: true,
-      mode: 'list',
       visibleColumns: [
         'title',
         'property',

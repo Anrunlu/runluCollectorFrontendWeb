@@ -16,7 +16,7 @@
         }}</q-badge>
       </q-tab>
       <q-tab icon="alarm_on" name="closedTasks" label="已截止">
-        <q-badge color="negative" floating transparent>{{
+        <q-badge color="grey" floating transparent>{{
           closedTasks.length
         }}</q-badge>
       </q-tab>
@@ -37,12 +37,10 @@
           :key="task.id"
         >
           <q-card-section>
-            <q-chip square size="md">
+            <q-chip square size="md" class="bg-blue-grey-1">
               <q-avatar
                 :icon="task.property === '提交任务' ? 'flag' : 'how_to_vote'"
-                :color="
-                  task.property == '提交任务' ? 'deep-orange' : 'green'
-                "
+                :color="task.property == '提交任务' ? 'deep-orange' : 'green'"
                 text-color="white"
               />
               {{ task.title }}
@@ -85,15 +83,17 @@
 
                 <q-item-section
                   ><q-linear-progress
-                    size="25px"
-                    :value="progress1"
-                    color="accent"
+                    size="20px"
+                    :value="task.cycleRate * 1"
+                    :color="task.cycleRate >= 0.1 ? 'green' : 'negative'"
+                    stripe
+                    rounded
                   >
                     <div class="absolute-full flex flex-center">
                       <q-badge
                         color="white"
                         text-color="accent"
-                        :label="progressLabel1"
+                        :label="`${task.diffToEnd}小时后截止`"
                       />
                     </div> </q-linear-progress
                 ></q-item-section>
@@ -144,7 +144,6 @@ export default {
   },
   data () {
     return {
-      progress1: 0.3,
       tab: 'underwayTasks',
       filter: '',
       customer: {},
@@ -215,11 +214,6 @@ export default {
   },
   created () {
     this.fetch()
-  },
-  computed: {
-    progressLabel1 () {
-      return (this.progress1 * 100).toFixed(2) + '%'
-    }
   },
   methods: {
     async fetch () {

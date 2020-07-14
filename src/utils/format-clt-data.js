@@ -14,7 +14,7 @@ export function formatCltBaseInfo (cltsData) {
     const diff = date.getDateDiff(curr.endtime, Date.now(), 'hours')
     if (diff > 1) {
       cltInfo.status = '进行中'
-    } else if (diff > 0) {
+    } else if (diff >= 0) {
       cltInfo.status = '将截止'
     } else {
       cltInfo.status = '已截止'
@@ -22,6 +22,9 @@ export function formatCltBaseInfo (cltsData) {
 
     cltInfo.create_time = date.formatDate(curr.createdAt, 'MM/DD HH:mm')
     cltInfo.end_time = date.formatDate(curr.endtime, 'MM/DD HH:mm')
+
+    cltInfo.cycleRate = getDiff(curr.createdAt, curr.endtime).cycleRate
+    cltInfo.diffToEnd = getDiff(curr.createdAt, curr.endtime).diffToEnd
     pre.push(cltInfo)
     return pre
   }, newData)
@@ -44,4 +47,11 @@ export function formatSingleCltDetail (cltData) {
     return { submitter: post.creator.nickname, subtime: subtime }
   })
   return newData
+}
+
+export function getDiff (starttime, endtime) {
+  const diffCycle = date.getDateDiff(endtime, starttime, 'hours')
+  const diffToEnd = date.getDateDiff(endtime, Date.now(), 'hours')
+  const cycleRate = (diffToEnd / diffCycle).toFixed(2)
+  return { cycleRate, diffToEnd }
 }
