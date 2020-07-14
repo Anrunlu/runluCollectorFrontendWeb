@@ -122,7 +122,7 @@
             text-color="white"
             dense
             square
-            >{{ group.name }}</q-chip
+            >{{ group }}</q-chip
           >
         </q-td>
       </template>
@@ -152,7 +152,7 @@
               dense
               color="red"
               icon="delete"
-              @click="removeClt(props.row)"
+              @click.stop="removeClt(props.row)"
             />
           </div>
         </q-td>

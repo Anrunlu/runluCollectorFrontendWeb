@@ -14,10 +14,11 @@ export function getOrgDetail (id) {
   })
 }
 
-export function getMyTasks () {
+export function getMyTasks (params) {
   return request({
     url: '/query/tasklist',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

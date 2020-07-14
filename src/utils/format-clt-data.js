@@ -8,7 +8,7 @@ export function formatCltBaseInfo (cltsData) {
     cltInfo.id = curr.id
     cltInfo.title = curr.title
     cltInfo.creator = curr.creator.nickname
-    cltInfo.groups = curr.groups
+    cltInfo.groups = curr.groups.map((group) => group.name)
     cltInfo.property = curr.property === 'private' ? '提交任务' : '公开征集'
 
     const diff = date.getDateDiff(curr.endtime, Date.now(), 'hours')

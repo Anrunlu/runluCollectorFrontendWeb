@@ -89,6 +89,7 @@
           :cltId="cltDetail.id"
           :fileformats="cltDetail.fileformat"
           @fetchReq="fetch"
+          v-if="!isEnded"
         />
       </div>
 
@@ -155,6 +156,7 @@ export default {
     return {
       showSubTable: false,
       showSubInfo: false,
+      isEnded: true,
       cltDetail: {
         posts: []
       },
@@ -171,6 +173,7 @@ export default {
         message: '加载中...'
       })
       const { data } = await getCollectionInfo(this.id, { mode: 'detail' })
+      this.isEnded = new Date(data.endtime) - Date.now() < 0
       this.cltDetail = formatSingleCltDetail(data)
       const { data: mySubInfo } = await isSubmitted(this.id)
       this.mySubStatus = mySubInfo.submitted
@@ -178,8 +181,6 @@ export default {
         this.mySubmittedPost = formatSinglePostDetail(mySubInfo.post)
       }
 
-      console.log(this.cltDetail)
-      console.log(this.mySubmittedPost)
       this.$q.loading.hide()
     }
   }

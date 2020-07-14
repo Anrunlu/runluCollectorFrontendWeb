@@ -1,6 +1,135 @@
 <template>
   <q-page class="q-pa-sm q-pt-md">
-    <CollectionList :data="data" :visibleColumns="visibleColumns" :columns="columns"></CollectionList>
+    <q-tabs
+      v-model="tab"
+      inline-label
+      dense
+      class="text-grey"
+      active-color="primary"
+      indicator-color="primary"
+      align="justify"
+      narrow-indicator
+    >
+      <q-tab icon="alarm" name="underwayTasks" label="进行中">
+        <q-badge color="positive" floating transparent>{{
+          underwayTasks.length
+        }}</q-badge>
+      </q-tab>
+      <q-tab icon="alarm_on" name="closedTasks" label="已截止">
+        <q-badge color="negative" floating transparent>{{
+          closedTasks.length
+        }}</q-badge>
+      </q-tab>
+      <q-tab icon="notes" name="allTasks" label="全部">
+        <q-badge color="primary" floating transparent>{{
+          allTasks.length
+        }}</q-badge>
+      </q-tab>
+    </q-tabs>
+
+    <q-separator />
+
+    <q-tab-panels v-model="tab" animated class="bg-grey-1">
+      <q-tab-panel name="underwayTasks" class="row justify-center q-gutter-md">
+        <q-card
+          class="col-md-3 col-11"
+          v-for="task in underwayTasks"
+          :key="task.id"
+        >
+          <q-card-section>
+            <q-chip square size="md">
+              <q-avatar
+                :icon="task.property === '提交任务' ? 'flag' : 'how_to_vote'"
+                :color="
+                  task.property == '提交任务' ? 'deep-orange' : 'green'
+                "
+                text-color="white"
+              />
+              {{ task.title }}
+            </q-chip>
+            <q-list separator class="q-mt-xs">
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon name="person" />
+                </q-item-section>
+
+                <q-item-section>{{ task.creator }}</q-item-section>
+              </q-item>
+
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon name="event" />
+                </q-item-section>
+
+                <q-item-section
+                  >发布时间：{{ task.create_time }}</q-item-section
+                >
+              </q-item>
+
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon name="people" />
+                </q-item-section>
+
+                <q-item-section>
+                  <div class="text-subtitle2">
+                    {{ task.groups.join("，") }}
+                  </div>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon name="alarm" />
+                </q-item-section>
+
+                <q-item-section
+                  ><q-linear-progress
+                    size="25px"
+                    :value="progress1"
+                    color="accent"
+                  >
+                    <div class="absolute-full flex flex-center">
+                      <q-badge
+                        color="white"
+                        text-color="accent"
+                        :label="progressLabel1"
+                      />
+                    </div> </q-linear-progress
+                ></q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+          <q-card-actions align="center">
+            <q-btn
+              class="full-width"
+              flat
+              label="进入收集"
+              icon="chrome_reader_mode"
+              @click="$router.push(`/collections/${task.id}`)"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-tab-panel>
+
+      <q-tab-panel name="closedTasks">
+        <CollectionList
+          :data="closedTasks"
+          :visibleColumns="visibleColumns"
+          :columns="columns"
+          :title="`已截止的任务`"
+        ></CollectionList>
+      </q-tab-panel>
+
+      <q-tab-panel name="allTasks">
+        <CollectionList
+          :data="allTasks"
+          :visibleColumns="visibleColumns"
+          :columns="columns"
+          :title="`全部任务`"
+        ></CollectionList>
+      </q-tab-panel>
+    </q-tab-panels>
   </q-page>
 </template>
 
@@ -15,12 +144,15 @@ export default {
   },
   data () {
     return {
+      progress1: 0.3,
+      tab: 'underwayTasks',
       filter: '',
       customer: {},
       new_customer: false,
       mode: 'list',
       visibleColumns: [
         'title',
+        'property',
         'creator',
         'status',
         'end_date',
@@ -33,6 +165,14 @@ export default {
           align: 'left',
           label: '标题',
           field: 'title',
+          sortable: true
+        },
+        {
+          name: 'property',
+          required: true,
+          label: '收集类型',
+          align: 'center',
+          field: row => row.property,
           sortable: true
         },
         {
@@ -65,7 +205,9 @@ export default {
           sortable: true
         }
       ],
-      data: [],
+      underwayTasks: [],
+      closedTasks: [],
+      allTasks: [],
       pagination: {
         rowsPerPage: 10
       }
@@ -74,13 +216,25 @@ export default {
   created () {
     this.fetch()
   },
+  computed: {
+    progressLabel1 () {
+      return (this.progress1 * 100).toFixed(2) + '%'
+    }
+  },
   methods: {
     async fetch () {
       this.$q.loading.show({
         message: '加载中...'
       })
-      const { data } = await getMyTasks()
-      this.data = formatCltBaseInfo(data)
+      const { data: underwayTasks } = await getMyTasks({ type: 'underway' })
+      const { data: closedTasks } = await getMyTasks({ type: 'closed' })
+      const { data: allTasks } = await getMyTasks({ type: 'all' })
+
+      console.log(allTasks)
+
+      this.underwayTasks = formatCltBaseInfo(underwayTasks)
+      this.closedTasks = formatCltBaseInfo(closedTasks)
+      this.allTasks = formatCltBaseInfo(allTasks)
       this.$q.loading.hide()
     }
   }

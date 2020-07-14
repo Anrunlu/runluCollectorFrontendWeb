@@ -92,8 +92,6 @@ export default {
         fileUrl: 'http:qiniu-created'
       }
 
-      console.log(post)
-
       try {
         // 创建数据库记录
         await createPost(post)
@@ -128,8 +126,6 @@ export default {
         filetype: this.file.name.replace(/.+\./, ''),
         fileUrl: 'http:qiniu-updated'
       }
-
-      console.log(post)
 
       try {
         // 更新数据库记录
