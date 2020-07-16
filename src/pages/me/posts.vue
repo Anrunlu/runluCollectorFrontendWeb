@@ -56,13 +56,25 @@
         </q-btn>
       </template>
 
+      <template v-slot:body-cell-desclt="props">
+        <q-td :props="props">
+          <q-chip outline dense :label="props.value" />
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-action="props">
         <q-td :props="props">
-          <div class="q-gutter-sm">
-            <a :href="props.row.fileUrl">
-              <q-btn flat round dense color="secondary" icon="get_app" />
-            </a>
-          </div>
+          <q-btn
+            flat
+            round
+            dense
+            color="primary"
+            icon="folder_open"
+            @click.stop="$router.push(`/collections/${props.row.desclt.id}`)"
+          />
+          <a :href="props.row.fileUrl">
+            <q-btn flat round dense color="secondary" icon="get_app" />
+          </a>
         </q-td>
       </template>
 
@@ -134,8 +146,6 @@ export default {
       })
       const { data } = await getMyPosts()
       this.data = formatPostsDetail(data)
-      console.log(this.data)
-
       this.$q.loading.hide()
     }
   }
@@ -143,6 +153,8 @@ export default {
 </script>
 <style scoped>
 a {
+  padding: 0;
+  margin: 0;
   text-decoration: none;
 }
 .q-chip__content {

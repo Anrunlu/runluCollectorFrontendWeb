@@ -44,3 +44,11 @@ export function getCltSubInfo (cltId, groupId, type) {
     params: { groupId, type }
   })
 }
+
+export function isGroupExist (groupName) {
+  return request({
+    url: '/query/isGroupExist',
+    method: 'get',
+    params: { groupName }
+  })
+}

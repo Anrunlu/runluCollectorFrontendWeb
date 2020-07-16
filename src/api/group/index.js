@@ -14,3 +14,11 @@ export function getGroupDetail (id) {
     method: 'get'
   })
 }
+
+export function createGroup (createGroupDto) {
+  return request({
+    url: '/groups',
+    method: 'post',
+    data: createGroupDto
+  })
+}

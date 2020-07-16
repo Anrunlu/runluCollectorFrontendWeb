@@ -1,19 +1,25 @@
 <template>
   <q-page class="q-pa-sm q-pt-md">
     <q-card>
-    <div class="text-h5 q-pa-sm">《{{cltTitle}}》提交详情</div>
-    <q-select
-      class="q-mb-lg"
-      dense
-      v-model="currgroup"
-      :options="groupOptions"
-      label="选择群组"
-      option-label="name"
-      option-value="_id"
-      standout="bg-primary text-white"
-    >
-      <template v-slot:prepend> <q-icon name="people" /> </template
-    ></q-select>
+      <q-chip
+        class="glossy q-my-sm q-pa-md"
+        icon="folder_open"
+        :label="cltTitle"
+        color="accent"
+        text-color="white"
+      />
+      <q-select
+        class="q-mb-lg"
+        dense
+        v-model="currgroup"
+        :options="groupOptions"
+        label="选择群组"
+        option-label="name"
+        option-value="_id"
+        standout="bg-primary text-white"
+      >
+        <template v-slot:prepend> <q-icon name="people" /> </template
+      ></q-select>
 
       <q-tabs
         v-model="tab"
@@ -26,13 +32,19 @@
         narrow-indicator
       >
         <q-tab icon="done" name="submitted" label="已提交">
-          <q-badge color="positive" floating transparent>{{submitted.length}}</q-badge>
+          <q-badge color="positive" floating transparent>{{
+            submitted.length
+          }}</q-badge>
         </q-tab>
         <q-tab icon="clear" name="nosubmit" label="未提交">
-          <q-badge color="negative" floating transparent>{{unSubmitted.length}}</q-badge>
+          <q-badge color="negative" floating transparent>{{
+            unSubmitted.length
+          }}</q-badge>
         </q-tab>
         <q-tab icon="notes" name="all" label="全部">
-          <q-badge color="primary" floating transparent>{{all.length}}</q-badge>
+          <q-badge color="primary" floating transparent>{{
+            all.length
+          }}</q-badge>
         </q-tab>
       </q-tabs>
 
@@ -73,6 +85,37 @@
                   <q-icon name="search" />
                 </template>
               </q-input>
+            </template>
+
+            <template v-slot:body-cell-username="props">
+              <q-td :props="props">
+                <q-chip dense outline icon="account_box" color="primary">
+                  {{ props.value }}
+                </q-chip>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-nickname="props">
+              <q-td :props="props">
+                <q-chip square dense outline>
+                  <q-avatar>
+                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                  </q-avatar>
+                  {{ props.value }}
+                </q-chip>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-origname="props">
+              <q-td :props="props">
+                <q-chip
+                  icon="insert_drive_file"
+                  outline
+                  dense
+                  color="teal"
+                  :label="props.value"
+                />
+              </q-td>
             </template>
 
             <template v-slot:body-cell-action="props">
@@ -131,6 +174,25 @@
               </q-input>
             </template>
 
+            <template v-slot:body-cell-username="props">
+              <q-td :props="props">
+                <q-chip dense outline icon="account_box" color="secondary">
+                  {{ props.value }}
+                </q-chip>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-nickname="props">
+              <q-td :props="props">
+                <q-chip square dense outline>
+                  <q-avatar>
+                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                  </q-avatar>
+                  {{ props.value }}
+                </q-chip>
+              </q-td>
+            </template>
+
             <template v-slot:body-cell-action="props">
               <q-td :props="props">
                 <div class="q-gutter-sm">
@@ -185,6 +247,24 @@
               </q-input>
             </template>
 
+            <template v-slot:body-cell-username="props">
+              <q-td :props="props">
+                <q-chip dense outline icon="account_box" color="secondary">
+                  {{ props.value }}
+                </q-chip>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-nickname="props">
+              <q-td :props="props">
+                <q-chip square dense outline>
+                  <q-avatar>
+                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                  </q-avatar>
+                  {{ props.value }}
+                </q-chip>
+              </q-td>
+            </template>
             <!-- <template v-slot:body-cell-action="props">
               <q-td :props="props">
                 <div class="q-gutter-sm">
@@ -268,7 +348,7 @@ export default {
         },
         {
           name: 'nickname',
-          align: 'center',
+          align: 'left',
           label: '姓名',
           field: row => row.nickname,
           sortable: true
@@ -284,14 +364,14 @@ export default {
       allColumns: [
         {
           name: 'username',
-          align: 'center',
+          align: 'left',
           label: '学号',
           field: row => row.username,
           sortable: true
         },
         {
           name: 'nickname',
-          align: 'center',
+          align: 'left',
           label: '姓名',
           field: row => row.nickname,
           sortable: true
@@ -331,8 +411,6 @@ export default {
       this.cltTitle = cltInfo.title
       this.groupOptions = cltInfo.groups
       this.currgroup = this.groupOptions[0]
-      console.log(cltInfo)
-
       this.$q.loading.hide()
     },
     async fetchSubInfo (subDataType) {
@@ -348,14 +426,12 @@ export default {
         formatSinglePostDetail(post)
       })
       this[subDataType] = data
-      console.log(this.data)
       this.$q.loading.hide()
     },
     onClickPackZip () {
       console.log('按下打包下载')
     }
   }
-
 }
 </script>
 <style scoped>

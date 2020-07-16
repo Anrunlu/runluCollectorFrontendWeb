@@ -225,8 +225,6 @@ export default {
       const { data: closedTasks } = await getMyTasks({ type: 'closed' })
       const { data: allTasks } = await getMyTasks({ type: 'all' })
 
-      console.log(allTasks)
-
       this.underwayTasks = formatCltBaseInfo(underwayTasks)
       this.closedTasks = formatCltBaseInfo(closedTasks)
       this.allTasks = formatCltBaseInfo(allTasks)

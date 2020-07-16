@@ -11,8 +11,8 @@ export function formatCltBaseInfo (cltsData) {
     cltInfo.groups = curr.groups.map((group) => group.name)
     cltInfo.property = curr.property === 'private' ? '提交任务' : '公开征集'
 
-    const diff = date.getDateDiff(curr.endtime, Date.now(), 'hours')
-    if (diff > 1) {
+    const diff = date.getDateDiff(curr.endtime, Date.now(), 'minutes')
+    if (diff > 60) {
       cltInfo.status = '进行中'
     } else if (diff >= 0) {
       cltInfo.status = '将截止'

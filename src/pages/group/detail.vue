@@ -34,6 +34,30 @@
                 </q-input>
               </template>
 
+              <template v-slot:body-cell-username="props">
+                <q-td :props="props">
+                  <q-chip
+                    dense
+                    outline
+                    icon="account_box"
+                    color="accent"
+                  >
+                    {{ props.value }}
+                  </q-chip>
+                </q-td>
+              </template>
+
+              <template v-slot:body-cell-nickname="props">
+                <q-td :props="props">
+                  <q-chip square dense outline>
+                    <q-avatar>
+                      <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                    </q-avatar>
+                    {{ props.value }}
+                  </q-chip>
+                </q-td>
+              </template>
+
               <template v-slot:body-cell-action="props">
                 <q-td :props="props">
                   <div class="q-gutter-sm">
@@ -70,13 +94,13 @@
               <q-item clickable v-ripple>
                 <q-item-section>
                   <q-item-label caption>创建者</q-item-label>
-                  <q-item-label>{{groupInfo.creator.nickname}}</q-item-label>
+                  <q-item-label>{{ groupInfo.creator.nickname }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item clickable v-ripple>
                 <q-item-section>
                   <q-item-label caption>创建时间</q-item-label>
-                  <q-item-label>{{groupInfo.createdAt}}</q-item-label>
+                  <q-item-label>{{ groupInfo.createdAt }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -97,7 +121,9 @@ export default {
   data () {
     return {
       filter: '',
-      groupInfo: {},
+      groupInfo: {
+        creator: {}
+      },
       columns: [
         {
           name: 'username',
@@ -108,7 +134,7 @@ export default {
         },
         {
           name: 'nickname',
-          align: 'center',
+          align: 'left',
           label: '姓名',
           field: row => row.nickname,
           sortable: true

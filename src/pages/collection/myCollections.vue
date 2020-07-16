@@ -3,7 +3,6 @@
     <q-table
       title="我的收集"
       :data="data"
-      :hide-header="mode === 'grid'"
       :columns="columns"
       :visible-columns="visibleColumns"
       row-key="name"
@@ -44,19 +43,17 @@
           dense
           :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
           @click="props.toggleFullscreen"
-          v-if="mode === 'list'"
         >
           <q-tooltip :disable="$q.platform.is.mobile" v-close-popup>{{
             props.inFullscreen ? "退出全屏" : "全屏"
           }}</q-tooltip>
         </q-btn>
 
-        <q-btn flat round dense icon="refresh" v-if="mode === 'list'">
+        <q-btn flat round dense icon="refresh">
           <q-tooltip :disable="$q.platform.is.mobile" v-close-popup>
             刷新
           </q-tooltip>
         </q-btn>
-
       </template>
 
       <template v-slot:body-cell-property="props">
@@ -77,9 +74,9 @@
         <q-td :props="props">
           <q-chip
             :color="
-              props.row.status == '进行中'
+              props.value == '进行中'
                 ? 'green'
-                : props.row.status == '将截止'
+                : props.value == '将截止'
                 ? 'red'
                 : 'grey'
             "
@@ -88,7 +85,7 @@
             class="text-weight-bolder"
             square
             style="width: 85px"
-            >{{ props.row.status }}</q-chip
+            >{{ props.value }}</q-chip
           >
         </q-td>
       </template>
@@ -236,8 +233,6 @@ export default {
       })
       const { data } = await getMyCollections()
       this.data = formatCltBaseInfo(data)
-      console.log(this.data)
-
       this.$q.loading.hide()
     },
     removeClt ({ title, id }) {
