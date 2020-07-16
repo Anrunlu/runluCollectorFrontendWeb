@@ -31,6 +31,9 @@
 
     <q-tab-panels v-model="tab" animated class="bg-grey-1">
       <q-tab-panel name="underwayTasks" class="row justify-center q-gutter-md">
+        <div class="text-h5" v-if="underwayTasks.length===0">
+          暂无进行中的任务
+        </div>
         <q-card
           class="col-md-3 col-11"
           v-for="task in underwayTasks"
@@ -146,8 +149,6 @@ export default {
     return {
       tab: 'underwayTasks',
       filter: '',
-      customer: {},
-      new_customer: false,
       mode: 'list',
       visibleColumns: [
         'title',

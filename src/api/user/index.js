@@ -22,3 +22,11 @@ export function getInfo () {
     method: 'get'
   })
 }
+
+export function setInfo (userDto) {
+  return request({
+    url: '/auth/user',
+    method: 'put',
+    data: userDto
+  })
+}

@@ -95,6 +95,13 @@ export default {
           sortable: true
         },
         {
+          name: 'desclt',
+          align: 'center',
+          label: '所属收集',
+          field: row => row.desclt.title,
+          sortable: true
+        },
+        {
           name: 'updatedAt',
           align: 'center',
           label: '提交时间',

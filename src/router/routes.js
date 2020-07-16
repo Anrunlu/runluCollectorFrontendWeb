@@ -20,6 +20,11 @@ const routes = [
         meta: { title: '我的文件' }
       },
       {
+        path: '/me/settings',
+        component: () => import('pages/me/profile.vue'),
+        meta: { title: '个人设置' }
+      },
+      {
         path: '/me/collections',
         component: () => import('pages/collection/myCollections.vue'),
         props: true,
@@ -52,6 +57,12 @@ const routes = [
         component: () => import('pages/collection/cltSubInfo.vue'),
         props: true,
         meta: { title: '提交详情' }
+      },
+      {
+        path: '/groups/:id',
+        component: () => import('pages/group/detail.vue'),
+        props: true,
+        meta: { title: '群组详情' }
       }
     ]
   },
