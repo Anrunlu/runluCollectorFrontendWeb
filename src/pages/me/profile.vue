@@ -44,6 +44,7 @@
                     dense
                     v-model="userDetails.nickname"
                     label="姓名"
+                    disable
                   />
                 </q-item-section>
               </q-item>

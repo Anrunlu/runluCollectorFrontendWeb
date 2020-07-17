@@ -59,6 +59,25 @@
       </q-btn>
     </template>
 
+    <template v-slot:body-cell-title="props">
+      <q-td :props="props">
+        <q-chip square dense outline icon="toc" color="secondary">
+          {{ props.value }}
+        </q-chip>
+      </q-td>
+    </template>
+
+    <template v-slot:body-cell-creator="props">
+      <q-td :props="props">
+        <q-chip square dense outline>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          </q-avatar>
+          {{ props.value }}
+        </q-chip>
+      </q-td>
+    </template>
+
     <template v-slot:body-cell-status="props">
       <q-td :props="props">
         <q-chip

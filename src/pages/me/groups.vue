@@ -141,13 +141,6 @@
           >
             <template v-slot:prepend> <q-icon name="people" /> </template
           ></q-input>
-          <q-input
-            v-if="checkedGroup.exist"
-            v-model="checkedGroup.group.creator.nickname"
-            type="text"
-            label="创建者"
-            disable
-          />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
@@ -234,7 +227,7 @@ export default {
       this.$q.loading.hide()
     },
     async onClickJoinGroup () {
-      await joinGroup(this.checkGroup.id)
+      await joinGroup(this.checkedGroup.group.id)
       this.$q.notify({
         type: 'positive',
         position: 'center',
@@ -270,7 +263,7 @@ export default {
         .onCancel(() => {
           this.$q.notify({
             message: '操作取消',
-            color: 'warning',
+            type: 'warning',
             position: 'center',
             timeout: 1000
           })
@@ -305,7 +298,7 @@ export default {
         .onCancel(() => {
           this.$q.notify({
             message: '操作取消',
-            color: 'warning',
+            type: 'warning',
             position: 'center',
             timeout: 1000
           })

@@ -30,6 +30,15 @@ export function joinGroup (groupId) {
   })
 }
 
+export function setManager (groupId, userId, type) {
+  // type=set 设置管理员 ,否则取消管理员
+  return request({
+    url: `/groups/setManager/${groupId}`,
+    method: 'get',
+    params: { userId, type }
+  })
+}
+
 export function leaveGroup (groupId) {
   return request({
     url: `/groups/leave/${groupId}`,

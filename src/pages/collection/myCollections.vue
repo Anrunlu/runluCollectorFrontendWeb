@@ -56,6 +56,14 @@
         </q-btn>
       </template>
 
+      <template v-slot:body-cell-title="props">
+        <q-td :props="props">
+          <q-chip square dense outline icon="toc" color="secondary">
+            {{ props.value }}
+          </q-chip>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-property="props">
         <q-td :props="props">
           <q-chip
@@ -144,6 +152,24 @@
         </div>
       </template>
     </q-table>
+
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-fab
+        v-model="fab"
+        label-position="right"
+        push
+        color="red"
+        icon="add"
+        direction="left"
+      >
+        <q-fab-action
+          color="primary"
+          icon="create_new_folder"
+          label="创建收集"
+          @click="$router.push('/collections/create')"
+        />
+      </q-fab>
+    </q-page-sticky>
   </q-page>
 </template>
 
