@@ -22,3 +22,24 @@ export function createGroup (createGroupDto) {
     data: createGroupDto
   })
 }
+
+export function joinGroup (groupId) {
+  return request({
+    url: `/groups/join/${groupId}`,
+    method: 'get'
+  })
+}
+
+export function leaveGroup (groupId) {
+  return request({
+    url: `/groups/leave/${groupId}`,
+    method: 'get'
+  })
+}
+
+export function removeGroup (groupId) {
+  return request({
+    url: `/groups/remove/${groupId}`,
+    method: 'delete'
+  })
+}

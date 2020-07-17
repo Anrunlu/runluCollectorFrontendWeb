@@ -40,6 +40,7 @@
           :visibleColumns="visibleColumns"
           :columns="columns"
           :title="`加入的群组`"
+          @leaveGroup="listenLeaveGroup"
         ></GroupList>
       </q-tab-panel>
 
@@ -49,6 +50,7 @@
           :visibleColumns="visibleColumns"
           :columns="columns"
           :title="`创建的群组`"
+          @removeGroup="listenRemoveGroup"
         ></GroupList>
       </q-tab-panel>
 
@@ -58,6 +60,7 @@
           :visibleColumns="visibleColumns"
           :columns="columns"
           :title="`管理的群组`"
+          @leaveGroup="listenLeaveGroup"
         ></GroupList>
       </q-tab-panel>
     </q-tab-panels>
@@ -164,7 +167,7 @@
 
 <script>
 import { isGroupExist } from 'src/api/query'
-import { getGroupList, createGroup } from 'src/api/group'
+import { getGroupList, createGroup, joinGroup, leaveGroup, removeGroup } from 'src/api/group'
 import GroupList from 'components/GroupList'
 
 export default {
@@ -230,18 +233,95 @@ export default {
       // this.allTasks = formatCltBaseInfo(allTasks)
       this.$q.loading.hide()
     },
-    onClickJoinGroup () {
-      console.log('okkkk')
+    async onClickJoinGroup () {
+      await joinGroup(this.checkGroup.id)
+      this.$q.notify({
+        type: 'positive',
+        position: 'center',
+        message: '加入群组成功'
+      })
+      this.fetch()
     },
+    async listenLeaveGroup (groupBaseInfo) {
+      this.$q
+        .dialog({
+          title: '请确认',
+          message: `退出群组《${groupBaseInfo.name}》，退出后你将不在收到该群组有关消息，是否确认退出`,
+          ok: {
+            label: '退出',
+            push: true,
+            color: 'negative'
+          },
+          cancel: {
+            label: '取消',
+            push: true
+          },
+          persistent: true
+        })
+        .onOk(async () => {
+          await leaveGroup(groupBaseInfo.id)
+          this.$q.notify({
+            type: 'info',
+            position: 'center',
+            message: '退出群组成功'
+          })
+          this.fetch()
+        })
+        .onCancel(() => {
+          this.$q.notify({
+            message: '操作取消',
+            color: 'warning',
+            position: 'center',
+            timeout: 1000
+          })
+        })
+    },
+
+    async listenRemoveGroup (groupBaseInfo) {
+      this.$q
+        .dialog({
+          title: '请确认',
+          message: `解散群组《${groupBaseInfo.name}》，该操作将删除所有与此群组相关的收集，操作不可恢复！`,
+          ok: {
+            label: '解散',
+            push: true,
+            color: 'negative'
+          },
+          cancel: {
+            label: '取消',
+            push: true
+          },
+          persistent: true
+        })
+        .onOk(async () => {
+          await removeGroup(groupBaseInfo.id)
+          this.$q.notify({
+            type: 'info',
+            position: 'center',
+            message: '解散群组成功'
+          })
+          this.fetch()
+        })
+        .onCancel(() => {
+          this.$q.notify({
+            message: '操作取消',
+            color: 'warning',
+            position: 'center',
+            timeout: 1000
+          })
+        })
+    },
+
     async onClickCreateGroup () {
       const { data } = await createGroup({
         name: this.createGroupName,
         org: this.$store.getters['user/orgId'],
         creator: this.$store.getters['user/id']
       })
-      console.log(data)
+      await joinGroup(data.id)
       this.$q.notify({
         type: 'positive',
+        position: 'center',
         message: '群组创建成功'
       })
       this.fetch()

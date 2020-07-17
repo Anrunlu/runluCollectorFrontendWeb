@@ -73,11 +73,12 @@
       <q-td :props="props">
         <div class="q-gutter-sm">
           <q-btn
+            v-if="title==='加入的群组'"
             flat
             round
             dense
             color="secondary"
-            :to="`/collections/${props.row.id}`"
+            :to="`/groups/${props.row.id}`"
             icon="find_in_page"
           />
           <q-btn
@@ -86,16 +87,26 @@
             round
             dense
             color="primary"
-            :to="`/collections/edit/${props.row.id}`"
+            :to="`/groups/${props.row.id}`"
             icon="edit"
           />
           <q-btn
+            v-if="title==='创建的群组'"
             flat
             round
             dense
             color="red"
-            :icon="title!=='创建的群组'?'exit_to_app':'delete'"
-            @click.stop="removeClt(props.row)"
+            icon="delete"
+            @click.stop="onClickRemoveGroup(props.row)"
+          />
+          <q-btn
+            v-if="title!=='创建的群组'"
+            flat
+            round
+            dense
+            color="red"
+            icon="exit_to_app"
+            @click.stop="onClickLeaveGroup(props.row)"
           />
         </div>
       </q-td>
@@ -126,6 +137,14 @@ export default {
   methods: {
     rowClick (evt, row) {
       this.$router.push(`/groups/${row.id}`)
+    },
+    onClickRemoveGroup (groupBaseInfo) {
+      console.log(groupBaseInfo)
+      this.$emit('removeGroup', groupBaseInfo)
+    },
+    onClickLeaveGroup (groupBaseInfo) {
+      console.log(groupBaseInfo)
+      this.$emit('leaveGroup', groupBaseInfo)
     }
   }
 }
