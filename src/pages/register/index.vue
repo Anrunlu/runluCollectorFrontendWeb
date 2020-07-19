@@ -42,7 +42,7 @@
                 v-model="model.username"
                 label="学工号 *"
                 hint="填写您的学号/工号"
-                :rules="[val => !!val || '请输入您的学工号']"
+                :rules="[checkUsername]"
               >
                 <template v-slot:prepend>
                   <q-icon name="perm_identity" color="blue" />
@@ -112,6 +112,7 @@
                   color="primary"
                   icon-right="people"
                   push
+                  :disable="disableRegisterBtn"
                   :loading="btnLoading"
                   @submit="onSubmit"
                 />
@@ -133,7 +134,7 @@
 
 <script>
 import { register } from '../../api/user'
-import { getOrgList } from '../../api/query'
+import { getOrgList, isUsernameExist } from '../../api/query'
 export default {
   // name: 'PageName',
   data () {
@@ -141,7 +142,8 @@ export default {
       model: {},
       isPwd: true,
       btnLoading: false,
-      orgOptions: []
+      orgOptions: [],
+      disableRegisterBtn: true
     }
   },
   created () {
@@ -178,6 +180,24 @@ export default {
           console.log(err)
           this.btnLoading = false
         })
+    },
+    checkUsername (val) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          isUsernameExist(this.model.org, val).then(res => {
+            if (!val) {
+              resolve('学/工号不可为空')
+            }
+            if (!res.data.exist) {
+              this.disableRegisterBtn = false
+              resolve(true)
+            } else {
+              this.disableRegisterBtn = true
+              resolve('该学/工号已注册')
+            }
+          })
+        }, 1000)
+      })
     }
   }
 }

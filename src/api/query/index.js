@@ -52,3 +52,11 @@ export function isGroupExist (groupName) {
     params: { groupName }
   })
 }
+
+export function isUsernameExist (orgId, username) {
+  return request({
+    url: '/query/isUsernameExist',
+    method: 'get',
+    params: { orgId, username }
+  })
+}
