@@ -23,12 +23,17 @@ export default ({ app, router, store }) => {
             position: 'center'
           })
           router.push('/login')
-        }
-        if (err.response.status === 500) {
+        } else if (err.response.status === 500) {
           Notify.create({
             message: '服务器异常，请稍后再试',
             color: 'red',
             icon: 'error',
+            position: 'center'
+          })
+        } else {
+          Notify.create({
+            message: err.response.data.message,
+            type: 'negative',
             position: 'center'
           })
         }
@@ -40,16 +45,16 @@ export default ({ app, router, store }) => {
   // request interceptor
   http.interceptors.request.use(
     config => {
-    // do something before request is sent
+      // do something before request is sent
 
       if (store.getters['user/token']) {
-      // let each request carry token
+        // let each request carry token
         config.headers.Authorization = 'Bearer ' + getToken() || ''
       }
       return config
     },
     error => {
-    // do something with request error
+      // do something with request error
       console.log(error) // for debug
       return Promise.reject(error)
     }

@@ -30,3 +30,11 @@ export function setInfo (userDto) {
     data: userDto
   })
 }
+
+export function changePwd (chgPasswordDto) {
+  return request({
+    url: '/auth/chgPassword',
+    method: 'put',
+    data: chgPasswordDto
+  })
+}

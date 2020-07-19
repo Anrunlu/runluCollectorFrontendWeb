@@ -121,7 +121,7 @@
                   outlined
                   color="black"
                   round
-                  v-model="password_dict.current_password"
+                  v-model="passwordDict.oldPassword"
                   label="Current Password"
                 />
               </q-item-section>
@@ -139,7 +139,7 @@
                   outlined
                   color="black"
                   round
-                  v-model="password_dict.new_password"
+                  v-model="passwordDict.newPassword"
                   label="New Password"
                 />
               </q-item-section>
@@ -157,14 +157,19 @@
                   outlined
                   round
                   color="black"
-                  v-model="password_dict.confirm_new_password"
+                  v-model="passwordDict.confirmPassword"
                   label="Confirm New Password"
+                  :rules="[
+                    val =>
+                      (val && val === passwordDict.newPassword) ||
+                      '两次密码不一致'
+                  ]"
                 />
               </q-item-section>
             </q-item>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn class="text-capitalize bg-info text-black">确认修改</q-btn>
+            <q-btn class="text-capitalize bg-info text-black" @click="changePassword">确认修改</q-btn>
           </q-card-actions>
         </q-card>
       </div>
@@ -173,7 +178,7 @@
 </template>
 
 <script>
-import { getInfo, setInfo } from 'src/api/user'
+import { getInfo, setInfo, changePwd } from 'src/api/user'
 import { getOrgDetail } from 'src/api/query'
 export default {
   name: 'UserProfile',
@@ -187,7 +192,11 @@ export default {
     return {
       userDetails: {},
       orgName: '',
-      password_dict: {}
+      passwordDict: {
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      }
     }
   },
   methods: {
@@ -204,6 +213,28 @@ export default {
       })
       await this.$store.dispatch('user/userLogout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    async changePassword () {
+      try {
+        await changePwd({
+          oldPassword: this.passwordDict.oldPassword,
+          newPassword: this.passwordDict.newPassword
+        })
+        this.$q.notify({
+          type: 'positive',
+          message: '修改密码成功，请重新登录',
+          position: 'center'
+        })
+        await this.$store.dispatch('user/userLogout')
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      } catch (e) {
+        console.log(e)
+        this.$q.notify({
+          type: 'warning',
+          message: '修改密码失败',
+          position: 'center'
+        })
+      }
     }
   }
 }
