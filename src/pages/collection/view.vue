@@ -131,9 +131,7 @@
             </q-item>
           </q-list>
           <q-card-actions vertical align="center">
-            <a :href="mySubmittedPost.fileUrl" target="blank"
-              ><q-btn flat color="primary" icon="get_app" label="下载文件"
-            /></a>
+            <q-btn flat color="primary" icon="get_app" label="下载文件" @click.stop="downloadFile" />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -145,6 +143,7 @@ import { isSubmitted } from 'src/api/query'
 import { getCollectionInfo } from 'src/api/collection'
 import { formatSingleCltDetail } from 'src/utils/format-clt-data'
 import { formatSinglePostDetail } from 'src/utils/format-post-data'
+import { saveAs } from 'file-saver'
 import PostUploader from 'components/PostUploader'
 import SubInfoTable from 'components/SubInfoTable'
 
@@ -182,8 +181,10 @@ export default {
       if (this.mySubStatus) {
         this.mySubmittedPost = formatSinglePostDetail(mySubInfo.post)
       }
-
       this.$q.loading.hide()
+    },
+    downloadFile () {
+      saveAs(this.mySubmittedPost.fileUrl, this.mySubmittedPost.origname)
     }
   }
 }
