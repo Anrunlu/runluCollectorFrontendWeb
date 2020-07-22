@@ -15,8 +15,10 @@
               {{ cltDetail.title }}
             </q-chip>
             <q-space />
-            <q-chip class="q-mt-md" size="sm" outline color="purple">
-              <q-avatar icon="person" color="purple" text-color="white" />
+            <q-chip class="q-mt-md" size="sm" square outline>
+              <q-avatar>
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              </q-avatar>
               {{ cltDetail.creator }}
             </q-chip>
             <q-chip

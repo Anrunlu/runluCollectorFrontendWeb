@@ -56,9 +56,21 @@
         </q-btn>
       </template>
 
+      <template v-slot:body-cell-origname="props">
+        <q-td :props="props">
+          <q-chip
+            color="green"
+            outline
+            dense
+            icon="insert_drive_file"
+            :label="props.value"
+          />
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-desclt="props">
         <q-td :props="props">
-          <q-chip outline dense :label="props.value" />
+          <q-chip outline dense icon="topic" :label="props.value" />
         </q-td>
       </template>
 
@@ -72,7 +84,7 @@
             icon="folder_open"
             @click.stop="$router.push(`/collections/${props.row.desclt.id}`)"
           />
-          <a :href="props.row.fileUrl">
+          <a :href="props.row.fileUrl" target="blank">
             <q-btn flat round dense color="secondary" icon="get_app" />
           </a>
         </q-td>

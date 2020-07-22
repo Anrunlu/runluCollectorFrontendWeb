@@ -158,6 +158,7 @@ export default {
           timeout: 2000
         })
         this.progress = 0
+        this.file = null
         this.btnLoading = false
       } catch (e) {
         console.log(e)
@@ -169,6 +170,7 @@ export default {
           timeout: 2000
         })
         this.progress = 0
+        this.file = null
         this.btnLoading = false
       }
     },
