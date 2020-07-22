@@ -155,7 +155,6 @@
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-fab
-        v-model="fab"
         label-position="right"
         push
         color="red"
