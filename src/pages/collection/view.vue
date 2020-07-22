@@ -129,7 +129,7 @@
             </q-item>
           </q-list>
           <q-card-actions vertical align="center">
-            <a href="https://anrunlu.net"
+            <a :href="mySubmittedPost.fileUrl" target="blank"
               ><q-btn flat color="primary" icon="get_app" label="下载文件"
             /></a>
           </q-card-actions>

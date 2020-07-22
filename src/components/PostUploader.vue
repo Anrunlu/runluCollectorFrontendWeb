@@ -63,6 +63,7 @@
 </template>
 <script>
 import { isSubmitted } from 'src/api/query'
+import { qiniuFileUpLoad, deleteSgFile } from 'src/utils/qiniu'
 import { createPost, updatePost } from 'src/api/post'
 export default {
   name: 'PostUploader',
@@ -70,7 +71,7 @@ export default {
   data () {
     return {
       btnLoading: false,
-      progress: 0.33,
+      progress: 0,
       file: null
     }
   },
@@ -82,6 +83,12 @@ export default {
   methods: {
     async upload () {
       // 调用七牛上传
+      const uploadRes = await qiniuFileUpLoad(
+        this.cltId,
+        this.$store.getters['user/username'],
+        this.file,
+        this
+      )
       // 同步数据到数据库
       const post = {
         org: this.$store.getters['user/orgId'],
@@ -89,7 +96,7 @@ export default {
         desclt: this.cltId,
         origname: this.file.name,
         filetype: this.file.name.replace(/.+\./, ''),
-        fileUrl: 'http:qiniu-created'
+        fileUrl: `http://cltdownload.anrunlu.net/${uploadRes.key}`
       }
 
       try {
@@ -104,6 +111,7 @@ export default {
           position: 'center',
           timeout: 2000
         })
+        this.progress = 0
         this.btnLoading = false
       } catch (e) {
         console.log(e)
@@ -114,22 +122,32 @@ export default {
           position: 'center',
           timeout: 2000
         })
+        this.progress = 0
         this.btnLoading = false
       }
     },
-    async reUpload (postId) {
+    async reUpload (post) {
       // 从七牛存储删除之前的文件
+      const filekey = post.fileUrl.split('/').pop()
+      await deleteSgFile(filekey)
       // 调用七牛上传
+      const uploadRes = await qiniuFileUpLoad(
+        this.cltId,
+        this.$store.getters['user/username'],
+        this.file,
+        this
+      )
+
       // 同步数据到数据库
-      const post = {
+      const upPost = {
         origname: this.file.name,
         filetype: this.file.name.replace(/.+\./, ''),
-        fileUrl: 'http:qiniu-updated'
+        fileUrl: `http://cltdownload.anrunlu.net/${uploadRes.key}`
       }
 
       try {
         // 更新数据库记录
-        await updatePost(postId, post)
+        await updatePost(post._id, upPost)
         // 告知父组件进行刷新
         this.$emit('fetchReq')
         this.$q.notify({
@@ -139,6 +157,7 @@ export default {
           position: 'center',
           timeout: 2000
         })
+        this.progress = 0
         this.btnLoading = false
       } catch (e) {
         console.log(e)
@@ -149,13 +168,13 @@ export default {
           position: 'center',
           timeout: 2000
         })
+        this.progress = 0
         this.btnLoading = false
       }
     },
 
     async onClickSubmitFile () {
       this.btnLoading = true
-      console.log(this.file)
       // 判断是否选择了文件
       if (!this.file) {
         this.$q.notify({
@@ -172,9 +191,7 @@ export default {
       // 1、查询是否已上传
       const { data } = await isSubmitted(this.cltId)
       if (data.submitted) {
-        console.log('already done')
         const post = data.post
-        console.log(post._id)
 
         this.$q
           .dialog({
@@ -194,7 +211,7 @@ export default {
           })
           .onOk(async () => {
             // 调用 reUpload
-            this.reUpload(post._id)
+            this.reUpload(post)
           })
           .onCancel(() => {
             this.$q.notify({
