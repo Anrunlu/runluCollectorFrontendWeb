@@ -84,9 +84,14 @@
             icon="folder_open"
             @click.stop="$router.push(`/collections/${props.row.desclt.id}`)"
           />
-          <a :href="props.row.fileUrl" target="blank">
-            <q-btn flat round dense color="secondary" icon="get_app" />
-          </a>
+          <q-btn
+            flat
+            round
+            dense
+            color="secondary"
+            icon="get_app"
+            @click.stop="downloadFile(props.row)"
+          />
         </q-td>
       </template>
 
@@ -104,6 +109,7 @@
 <script>
 import { getMyPosts } from 'src/api/post'
 import { formatPostsDetail } from 'src/utils/format-post-data'
+import { saveAs } from 'file-saver'
 export default {
   data () {
     return {
@@ -159,6 +165,9 @@ export default {
       const { data } = await getMyPosts()
       this.data = formatPostsDetail(data)
       this.$q.loading.hide()
+    },
+    downloadFile (postInfo) {
+      saveAs(postInfo.fileUrl, postInfo.origname)
     }
   }
 }

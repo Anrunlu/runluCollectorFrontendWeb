@@ -64,13 +64,21 @@
             no-data-label="暂无任务"
           >
             <template v-slot:top-left>
-              <q-btn
-                :disable="submitted.length <= 0"
-                color="primary"
-                icon="get_app"
-                label="打包下载"
-                @click="onClickPackZip"
-              />
+              <div class="q-gutter-sm">
+                <q-btn
+                  :disable="submitted.length <= 0"
+                  color="primary"
+                  icon="get_app"
+                  label="打包下载"
+                  @click="onClickPackZip"
+                />
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="设置重命名规则"
+                  @click="renameRulesRadio"
+                />
+              </div>
             </template>
 
             <template v-slot:top-right>
@@ -122,9 +130,7 @@
             <template v-slot:body-cell-action="props">
               <q-td :props="props">
                 <div class="q-gutter-sm">
-                  <a :href="props.row.fileUrl"
-                    ><q-btn dense color="primary" icon="get_app"
-                  /></a>
+                  <q-btn dense color="primary" icon="get_app" @click.stop="downloadSingleFile(props.row)" />
                 </div>
               </q-td>
             </template>
@@ -306,7 +312,7 @@
             icon="get_app"
             label="下载"
             v-close-popup
-            @click.stop="saveFile"
+            @click.stop="downloadZipFile"
           />
         </q-card-actions>
       </q-card>
@@ -327,6 +333,7 @@ export default {
       mkzipSuccessDialog: false,
       zipFileUrl:
         'http://cltdownload.anrunlu.net/5e85786add46962b35e7cbdf-2019414172.docx',
+      renameRule: 1,
       tab: 'submitted',
       cltTitle: '',
       currgroup: null,
@@ -466,10 +473,22 @@ export default {
         cltId: this.id
       })
     },
-    saveFile () {
+    downloadSingleFile (postInfo) {
+      console.log(postInfo)
+      let renameTemplate = ''
+      if (this.renameRule === 1) {
+        renameTemplate = `${postInfo.creator.username}-${postInfo.creator.nickname}`
+      } else if (this.renameRule === 2) {
+        renameTemplate = `${this.cltTitle}-${postInfo.creator.username}-${postInfo.creator.nickname}`
+      } else {
+        renameTemplate = postInfo.origname
+      }
+      saveAs(postInfo.fileUrl, renameTemplate)
+    },
+    downloadZipFile () {
       this.$q.notify({
         message:
-          '已启动下载，压缩包命名默认同收集标题，下载时长取决于文件体积，请耐心等待...',
+          '已启动下载，压缩包名称默认同收集标题，下载时长取决于文件体积，请耐心等待...',
         color: 'positive',
         position: 'top-right',
         multiLine: true,
@@ -486,6 +505,33 @@ export default {
         ]
       })
       saveAs(this.zipFileUrl, `${this.cltTitle}.docx`)
+    },
+    renameRulesRadio () {
+      this.$q
+        .dialog({
+          title: '设置重命名规则',
+          message: '请设置单个文件重命名规则:',
+          options: {
+            type: 'radio',
+            model: this.renameRule,
+            items: [
+              { label: '学(工)号—姓名', value: 1 },
+              { label: '收集标题—学(工)号—姓名', value: 2 },
+              { label: '文件原始名称', value: 3 }
+            ]
+          },
+          cancel: true,
+          persistent: true
+        })
+        .onOk(data => {
+          this.renameRule = data
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        })
     }
   },
   sockets: {
