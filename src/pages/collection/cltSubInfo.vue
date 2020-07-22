@@ -65,6 +65,7 @@
           >
             <template v-slot:top-left>
               <q-btn
+                :disable="submitted.length <= 0"
                 color="primary"
                 icon="get_app"
                 label="打包下载"
@@ -284,6 +285,32 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
+    <q-dialog
+      v-model="mkzipSuccessDialog"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
+      <q-card class="bg-teal text-white" style="width: 300px">
+        <q-card-section>
+          <div class="text-h6">打包成功</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          请点击下方的按钮进行下载
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn
+            flat
+            icon="get_app"
+            label="下载"
+            v-close-popup
+            @click.stop="saveFile"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -291,10 +318,15 @@
 import { getCltSubInfo } from 'src/api/query'
 import { getCollectionInfo } from 'src/api/collection'
 import { formatSinglePostDetail } from '../../utils/format-post-data'
+import { saveAs } from 'file-saver'
+import { QSpinnerGears } from 'quasar'
 export default {
   props: ['id'],
   data () {
     return {
+      mkzipSuccessDialog: false,
+      zipFileUrl:
+        'http://cltdownload.anrunlu.net/5e85786add46962b35e7cbdf-2019414172.docx',
       tab: 'submitted',
       cltTitle: '',
       currgroup: null,
@@ -430,6 +462,67 @@ export default {
     },
     onClickPackZip () {
       console.log('按下打包下载')
+      this.$socket.emit('mkzip', {
+        cltId: this.id
+      })
+    },
+    saveFile () {
+      this.$q.notify({
+        message:
+          '已启动下载，压缩包命名默认同收集标题，下载时长取决于文件体积，请耐心等待...',
+        color: 'positive',
+        position: 'top-right',
+        multiLine: true,
+        timeout: 10000,
+        avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+        actions: [
+          {
+            label: '知道了',
+            color: 'yellow',
+            handler: () => {
+              /* ... */
+            }
+          }
+        ]
+      })
+      saveAs(this.zipFileUrl, `${this.cltTitle}.docx`)
+    }
+  },
+  sockets: {
+    connect () {
+      console.log('connected')
+    },
+    mkzipStart (data) {
+      // 监听message事件，方法是后台定义和提供的
+      console.log(`监听开始打包。。。${data}`)
+      if (data.success) {
+        this.$q.loading.show({
+          spinner: QSpinnerGears,
+          spinnerColor: 'white',
+          messageColor: 'white',
+          backgroundColor: 'black',
+          message: '云端打包中，打包时长取决于文件总体积，请耐心等待...'
+        })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: '打包失败，请稍后再试'
+        })
+      }
+    },
+    mkzipEnd (data) {
+      console.log(`收到结束信号${data}`)
+      if (data.success) {
+        this.$q.loading.hide()
+        this.zipFileUrl = 'http://cltdownload.anrunlu.net/' + data.key
+        this.mkzipSuccessDialog = true
+      } else {
+        this.$q.loading.hide()
+        this.$q.notify({
+          type: 'negative',
+          message: '打包失败，请联系管理员'
+        })
+      }
     }
   }
 }
