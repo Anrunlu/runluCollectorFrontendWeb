@@ -268,6 +268,11 @@ export default {
       ]
     }
   },
+  created () {
+    if (this.$q.platform.is.mobile) {
+      this.leftDrawerOpen = false
+    }
+  },
   methods: {
     async logout () {
       await this.$store.dispatch('user/userLogout')

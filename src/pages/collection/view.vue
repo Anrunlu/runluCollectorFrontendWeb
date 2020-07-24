@@ -159,6 +159,7 @@ export default {
       showSubInfo: false,
       isEnded: true,
       cltDetail: {
+        creator: {},
         posts: []
       },
       mySubStatus: false,
