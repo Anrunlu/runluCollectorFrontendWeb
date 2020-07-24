@@ -16,10 +16,10 @@
             </q-chip>
             <q-space />
             <q-chip class="q-mt-md" size="sm" square outline>
-              <q-avatar>
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <q-avatar size="xs">
+                <img :src="cltDetail.creator.avatar" />
               </q-avatar>
-              {{ cltDetail.creator }}
+              {{ cltDetail.creator.nickname }}
             </q-chip>
             <q-chip
               class="q-mt-md"

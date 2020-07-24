@@ -34,6 +34,31 @@ export async function qiniuFileUpLoad (cltId, username, file, that) {
     observable.subscribe(observer) // 上传开始
   })
 }
+export async function qiniuAvatarUpLoad (username, file) {
+  const { data } = await getUploadToken()
+  const uploadToken = data.uploadToken
+  console.log('获取uptoken成功')
+  return new Promise((resolve, reject) => {
+    /* 上传文件 */
+    // 上传前准备
+    const key = `${username}-${Date.now()}.${file.type.split('/').pop()}`
+
+    // 定义一个观察对象用于显示进度
+    const observer = {
+      next (res) {
+      },
+      error (err) {
+        reject(err)
+      },
+      complete (res) {
+        resolve({ success: true, data: res })
+      }
+    }
+    // 调用qiniu api 上传
+    const observable = qiniu.upload(file, key, uploadToken)
+    observable.subscribe(observer) // 上传开始
+  })
+}
 
 export async function deleteSgFile (filekey) {
   await deleteSingleFile(filekey)

@@ -12,6 +12,9 @@ export function username (state) {
 export function nickname (state) {
   return state.nickname
 }
+export function avatar (state) {
+  return state.avatar
+}
 export function id (state) {
   return state.id
 }

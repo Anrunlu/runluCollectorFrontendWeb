@@ -16,6 +16,7 @@
     "file-saver": "^2.0.2",
     "qiniu-js": "^3.0.3",
     "quasar": "^1.0.0",
+    "vue-avatar-editor-improved": "^1.0.5",
     "vue-socket.io": "^3.0.7"
   },
   "devDependencies": {

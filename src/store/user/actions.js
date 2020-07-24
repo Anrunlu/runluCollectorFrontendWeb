@@ -23,6 +23,7 @@ export function getUserInfo ({ commit }, state) {
       commit('SET_ORGID', data.org)
       commit('SET_USERNAME', data.username)
       commit('SET_NICKNAME', data.nickname)
+      commit('SET_AVATAR', data.avatar)
       commit('SET_USERLEVEL', data.userlevel)
       resolve()
     }).catch(error => {

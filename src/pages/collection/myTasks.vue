@@ -31,7 +31,7 @@
 
     <q-tab-panels v-model="tab" animated class="bg-grey-1">
       <q-tab-panel name="underwayTasks" class="row justify-center q-gutter-md">
-        <div class="text-h5" v-if="underwayTasks.length===0">
+        <div class="text-h5" v-if="underwayTasks.length === 0">
           暂无进行中的任务
         </div>
         <q-card
@@ -54,7 +54,16 @@
                   <q-icon name="person" />
                 </q-item-section>
 
-                <q-item-section>{{ task.creator }}</q-item-section>
+                <q-item-section>
+                  <span>
+                    <q-chip size="sm" square outline>
+                      <q-avatar size="xs">
+                        <img :src="task.creator.avatar" />
+                      </q-avatar>
+                      {{ task.creator.nickname }}
+                    </q-chip>
+                  </span>
+                </q-item-section>
               </q-item>
 
               <q-item clickable v-ripple>

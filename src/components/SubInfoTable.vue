@@ -10,9 +10,24 @@
   >
     <template v-slot:top-left>
       <q-chip square size="md">
-        <q-avatar color="green" text-color="white" icon="move_to_inbox"></q-avatar>
-        已提交人数 {{posts.length}}
+        <q-avatar
+          color="green"
+          text-color="white"
+          icon="move_to_inbox"
+        ></q-avatar>
+        已提交人数 {{ posts.length }}
       </q-chip>
+    </template>
+
+    <template v-slot:body-cell-submitter="props">
+      <q-td :props="props">
+        <q-chip square dense outline>
+          <q-avatar size="xs">
+            <img :src="props.row.submitter.avatar" />
+          </q-avatar>
+          {{ props.row.submitter.nickname }}
+        </q-chip>
+      </q-td>
     </template>
 
     <template v-slot:no-data="">
@@ -35,7 +50,7 @@ export default {
         {
           name: 'submitter',
           required: true,
-          label: '姓名',
+          label: '上传者',
           align: 'left',
           field: row => row.submitter,
           format: val => `${val}`,

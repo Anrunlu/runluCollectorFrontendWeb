@@ -107,7 +107,7 @@
 
           <q-btn dense flat no-wrap>
             <q-avatar rounded size="25px">
-              <img src="~assets/boy-avatar.png" />
+              <img :src="$store.getters['user/avatar']" />
             </q-avatar>
             <q-icon name="arrow_drop_down" size="16px" />
 

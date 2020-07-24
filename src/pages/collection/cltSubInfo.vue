@@ -107,8 +107,8 @@
             <template v-slot:body-cell-nickname="props">
               <q-td :props="props">
                 <q-chip square dense outline>
-                  <q-avatar>
-                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                  <q-avatar size="xs">
+                    <img :src="props.row.creator.avatar" />
                   </q-avatar>
                   {{ props.value }}
                 </q-chip>
@@ -130,7 +130,12 @@
             <template v-slot:body-cell-action="props">
               <q-td :props="props">
                 <div class="q-gutter-sm">
-                  <q-btn dense color="primary" icon="get_app" @click.stop="downloadSingleFile(props.row)" />
+                  <q-btn
+                    dense
+                    color="primary"
+                    icon="get_app"
+                    @click.stop="downloadSingleFile(props.row)"
+                  />
                 </div>
               </q-td>
             </template>
@@ -192,8 +197,8 @@
             <template v-slot:body-cell-nickname="props">
               <q-td :props="props">
                 <q-chip square dense outline>
-                  <q-avatar>
-                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                  <q-avatar size="xs">
+                    <img :src="props.row.avatar" />
                   </q-avatar>
                   {{ props.value }}
                 </q-chip>
@@ -265,8 +270,8 @@
             <template v-slot:body-cell-nickname="props">
               <q-td :props="props">
                 <q-chip square dense outline>
-                  <q-avatar>
-                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                  <q-avatar size="xs">
+                    <img :src="props.row.avatar" />
                   </q-avatar>
                   {{ props.value }}
                 </q-chip>
@@ -331,8 +336,7 @@ export default {
   data () {
     return {
       mkzipSuccessDialog: false,
-      zipFileUrl:
-        'http://cltdownload.anrunlu.net/5e85786add46962b35e7cbdf-2019414172.docx',
+      zipFileUrl: '',
       renameRule: 1,
       tab: 'submitted',
       cltTitle: '',

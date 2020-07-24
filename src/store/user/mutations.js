@@ -35,6 +35,10 @@ export function SET_NICKNAME (state, nickname) {
   state.nickname = nickname
 }
 
+export function SET_AVATAR (state, avatar) {
+  state.avatar = avatar
+}
+
 export function SET_USERLEVEL (state, userlevel) {
   state.userlevel = userlevel
 }

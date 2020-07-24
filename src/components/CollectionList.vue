@@ -70,10 +70,10 @@
     <template v-slot:body-cell-creator="props">
       <q-td :props="props">
         <q-chip square dense outline>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          <q-avatar size="xs">
+            <img :src="props.row.creator.avatar" />
           </q-avatar>
-          {{ props.value }}
+          {{ props.value.nickname }}
         </q-chip>
       </q-td>
     </template>

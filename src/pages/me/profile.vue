@@ -12,7 +12,7 @@
               <q-item class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <q-item-section side>
                   <q-avatar size="100px">
-                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                    <img :src="$store.getters['user/avatar']" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
@@ -22,6 +22,7 @@
                     rounded
                     color="info"
                     style="max-width: 120px"
+                    @click.stop="uploadAvatarDialog = !uploadAvatarDialog"
                   ></q-btn>
                 </q-item-section>
               </q-item>
@@ -169,19 +170,34 @@
             </q-item>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn class="text-capitalize bg-info text-black" @click="changePassword">确认修改</q-btn>
+            <q-btn
+              class="text-capitalize bg-info text-black"
+              @click="changePassword"
+              >确认修改</q-btn
+            >
           </q-card-actions>
         </q-card>
       </div>
     </div>
+    <q-dialog v-model="uploadAvatarDialog">
+      <q-card class="my-card">
+        <VueAvatarEditor @finished="savaAvatar" />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import { getInfo, setInfo, changePwd } from 'src/api/user'
 import { getOrgDetail } from 'src/api/query'
+import { dataURItoBlob } from 'src/utils/convert-tools'
+import { qiniuAvatarUpLoad } from 'src/utils/qiniu'
+import VueAvatarEditor from 'vue-avatar-editor-improved'
 export default {
   name: 'UserProfile',
+  components: {
+    VueAvatarEditor
+  },
   async created () {
     const { data: user } = await getInfo()
     this.userDetails = user
@@ -192,6 +208,7 @@ export default {
     return {
       userDetails: {},
       orgName: '',
+      uploadAvatarDialog: false,
       passwordDict: {
         oldPassword: '',
         newPassword: '',
@@ -234,6 +251,34 @@ export default {
           message: '修改密码失败',
           position: 'center'
         })
+      }
+    },
+    async savaAvatar (img) {
+      const newAvatarFile = dataURItoBlob(img.toDataURL())
+      console.log(newAvatarFile)
+      try {
+        const res = await qiniuAvatarUpLoad(this.userDetails.username, newAvatarFile)
+        console.log(res)
+        await setInfo({
+          avatar: `http://cltdownload.anrunlu.net/${res.data.key}`
+        })
+        if (res.success) {
+          this.$q.notify({
+            type: 'positive',
+            message: '更换成功，重新登录后刷新页面生效',
+            position: 'center'
+          })
+          await this.$store.dispatch('user/userLogout')
+          this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        } else {
+          this.$q.notify({
+            type: 'negative',
+            message: '更新失败',
+            position: 'center'
+          })
+        }
+      } catch (e) {
+        console.log(e)
       }
     }
   }

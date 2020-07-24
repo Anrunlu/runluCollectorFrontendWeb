@@ -7,7 +7,7 @@ export function formatCltBaseInfo (cltsData) {
     let cltInfo = {}
     cltInfo.id = curr.id
     cltInfo.title = curr.title
-    cltInfo.creator = curr.creator.nickname
+    cltInfo.creator = curr.creator
     cltInfo.groups = curr.groups.map((group) => group.name)
     cltInfo.property = curr.property === 'private' ? '提交任务' : '公开征集'
 
@@ -35,7 +35,7 @@ export function formatSingleCltDetail (cltData) {
   const newData = {}
   newData.id = cltData.id
   newData.title = cltData.title
-  newData.creator = cltData.creator.nickname
+  newData.creator = cltData.creator
   newData.description = cltData.description
   newData.create_time = date.formatDate(cltData.createdAt, 'MM/DD HH:mm')
   newData.end_time = date.formatDate(cltData.endtime, 'MM/DD HH:mm')
@@ -44,7 +44,7 @@ export function formatSingleCltDetail (cltData) {
   newData.groups = cltData.groups.map((group) => group.name)
   newData.posts = cltData.posts.map((post) => {
     const subtime = date.formatDate(post.updatedAt, 'MM/DD HH:mm')
-    return { submitter: post.creator.nickname, subtime: subtime }
+    return { submitter: post.creator, subtime: subtime }
   })
   return newData
 }
