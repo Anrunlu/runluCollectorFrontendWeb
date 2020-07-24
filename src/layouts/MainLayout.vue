@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh LpR lff" class="bg-grey-1">
+  <q-layout view="hHh Lpr lff" class="bg-grey-1">
     <q-header elevated class="bg-white text-grey-8" height-hint="64">
       <q-toolbar class="GPL__toolbar" style="height: 64px">
         <q-btn
@@ -125,7 +125,9 @@
                   <q-item-section>帮助</q-item-section>
                 </q-item>
                 <q-item clickable class="GPL__menu-link">
-                  <q-item-section @click="$router.push('/me/settings')">个人设置</q-item-section>
+                  <q-item-section @click="$router.push('/me/settings')"
+                    >个人设置</q-item-section
+                  >
                 </q-item>
                 <q-item clickable class="GPL__menu-link">
                   <q-item-section @click="logout">退出登录</q-item-section>
@@ -145,17 +147,19 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
+      :mini="!leftDrawerOpen || miniState"
       elevated
+      :width="250"
+      :breakpoint="500"
+      @click.capture="drawerClick"
       side="left"
-      @click="leftDrawerOpen = false"
     >
       <q-scroll-area class="fit">
-        <q-toolbar class="GPL__toolbar">
+        <!-- <q-toolbar class="GPL__toolbar">
           <q-toolbar-title class="row items-center text-grey-8">
             <img class="q-pl-md" src="~assets/logo.png" width="140" />
-            <!-- <span class="q-ml-sm">Photos</span> -->
           </q-toolbar-title>
-        </q-toolbar>
+        </q-toolbar> -->
 
         <q-list padding>
           <q-item
@@ -165,7 +169,6 @@
             clickable
             exact
             v-ripple.early
-            class="GPL__drawer-item"
           >
             <q-item-section avatar>
               <q-icon :name="link.icon" />
@@ -184,7 +187,6 @@
             clickable
             exact
             v-ripple.early
-            class="GPL__drawer-item"
           >
             <q-item-section avatar>
               <q-icon :name="link.icon" />
@@ -203,7 +205,6 @@
             clickable
             exact
             v-ripple.early
-            class="GPL__drawer-item"
           >
             <q-item-section avatar>
               <q-icon :name="link.icon" />
@@ -214,13 +215,23 @@
           </q-item>
         </q-list>
       </q-scroll-area>
+      <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
+        <q-btn
+          dense
+          round
+          unelevated
+          color="primary"
+          icon="chevron_left"
+          @click="miniState = true"
+        />
+      </div>
     </q-drawer>
 
     <q-footer elevated>
       <q-toolbar>
         <q-toolbar-title class="text-center text-caption">
           &copy; 2020 · 润鲁收集 · POWERED BY 安润鲁
-          </q-toolbar-title>
+        </q-toolbar-title>
       </q-toolbar>
     </q-footer>
 
@@ -234,7 +245,8 @@
 export default {
   data () {
     return {
-      leftDrawerOpen: false,
+      miniState: false,
+      leftDrawerOpen: true,
       search: '',
       links1: [
         { icon: 'topic', text: '任务列表', to: '/collections/myTasks' },
@@ -266,6 +278,18 @@ export default {
     async logout () {
       await this.$store.dispatch('user/userLogout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    drawerClick (e) {
+      // if in "mini" state and user
+      // click on drawer, we switch it to "normal" mode
+      if (this.miniState) {
+        this.miniState = false
+
+        // notice we have registered an event with capture flag;
+        // we need to stop further propagation as this click is
+        // intended for switching drawer to "normal" mode only
+        e.stopPropagation()
+      }
     }
   }
 }
