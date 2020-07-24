@@ -470,7 +470,8 @@ export default {
     onClickPackZip () {
       console.log('按下打包下载')
       this.$socket.emit('mkzip', {
-        cltId: this.id
+        cltId: this.id,
+        renameRule: this.renameRule
       })
     },
     downloadSingleFile (postInfo) {
@@ -517,7 +518,7 @@ export default {
             items: [
               { label: '学(工)号—姓名', value: 1 },
               { label: '收集标题—学(工)号—姓名', value: 2 },
-              { label: '文件原始名称', value: 3 }
+              { label: '学(工)号-姓名-文件原始名称', value: 3 }
             ]
           },
           cancel: true,
@@ -525,12 +526,6 @@ export default {
         })
         .onOk(data => {
           this.renameRule = data
-        })
-        .onCancel(() => {
-          // console.log('>>>> Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
         })
     }
   },
