@@ -135,12 +135,6 @@
               </q-list>
             </q-menu>
           </q-btn>
-          <!-- <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <q-tooltip>Account</q-tooltip>
-          </q-btn> -->
         </div>
       </q-toolbar>
     </q-header>
@@ -155,11 +149,11 @@
       side="left"
     >
       <q-scroll-area class="fit">
-        <!-- <q-toolbar class="GPL__toolbar">
+        <q-toolbar class="GPL__toolbar mobile-only">
           <q-toolbar-title class="row items-center text-grey-8">
             <img class="q-pl-md" src="~assets/logo.png" width="140" />
           </q-toolbar-title>
-        </q-toolbar> -->
+        </q-toolbar>
 
         <q-list padding>
           <q-item
