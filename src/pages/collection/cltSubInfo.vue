@@ -443,6 +443,43 @@ export default {
       await this.fetchSubInfo('all')
     }
   },
+  sockets: {
+    connect () {
+      console.log('connected')
+    },
+    mkzipStart: function (data) {
+      // 监听message事件，方法是后台定义和提供的
+      console.log(`监听开始打包。。。${data}`)
+      if (data.success) {
+        this.$q.loading.show({
+          spinner: QSpinnerGears,
+          spinnerColor: 'white',
+          messageColor: 'white',
+          backgroundColor: 'black',
+          message: '云端打包中，打包时长取决于文件总体积，请耐心等待...'
+        })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: '打包失败，请稍后再试'
+        })
+      }
+    },
+    mkzipEnd: function (data) {
+      console.log(`收到结束信号${data}`)
+      if (data.success) {
+        this.$q.loading.hide()
+        this.zipFileUrl = 'http://cltdownload.anrunlu.net/' + data.key
+        this.mkzipSuccessDialog = true
+      } else {
+        this.$q.loading.hide()
+        this.$q.notify({
+          type: 'negative',
+          message: '打包失败，请联系管理员'
+        })
+      }
+    }
+  },
   methods: {
     async fetchBase () {
       this.$q.loading.show({
@@ -531,43 +568,6 @@ export default {
         .onOk(data => {
           this.renameRule = data
         })
-    }
-  },
-  sockets: {
-    connect () {
-      console.log('connected')
-    },
-    mkzipStart (data) {
-      // 监听message事件，方法是后台定义和提供的
-      console.log(`监听开始打包。。。${data}`)
-      if (data.success) {
-        this.$q.loading.show({
-          spinner: QSpinnerGears,
-          spinnerColor: 'white',
-          messageColor: 'white',
-          backgroundColor: 'black',
-          message: '云端打包中，打包时长取决于文件总体积，请耐心等待...'
-        })
-      } else {
-        this.$q.notify({
-          type: 'negative',
-          message: '打包失败，请稍后再试'
-        })
-      }
-    },
-    mkzipEnd (data) {
-      console.log(`收到结束信号${data}`)
-      if (data.success) {
-        this.$q.loading.hide()
-        this.zipFileUrl = 'http://cltdownload.anrunlu.net/' + data.key
-        this.mkzipSuccessDialog = true
-      } else {
-        this.$q.loading.hide()
-        this.$q.notify({
-          type: 'negative',
-          message: '打包失败，请联系管理员'
-        })
-      }
     }
   }
 }
