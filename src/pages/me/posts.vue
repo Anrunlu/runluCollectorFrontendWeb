@@ -70,13 +70,20 @@
 
       <template v-slot:body-cell-desclt="props">
         <q-td :props="props">
-          <q-chip outline dense icon="topic" :label="props.value" />
+          <q-chip
+            outline
+            dense
+            :color="props.value ? 'primary' : 'red'"
+            :icon="props.value ? 'topic' : 'error'"
+            :label="props.value ? props.value.title : '已被撤销'"
+          />
         </q-td>
       </template>
 
       <template v-slot:body-cell-action="props">
         <q-td :props="props">
           <q-btn
+            v-if="props.row.desclt"
             flat
             round
             dense
@@ -128,7 +135,7 @@ export default {
           name: 'desclt',
           align: 'center',
           label: '所属收集',
-          field: row => row.desclt.title,
+          field: row => row.desclt,
           sortable: true
         },
         {
