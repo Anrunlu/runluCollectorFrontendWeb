@@ -260,7 +260,7 @@ export default {
         const res = await qiniuAvatarUpLoad(this.userDetails.username, newAvatarFile)
         console.log(res)
         await setInfo({
-          avatar: `https://cltdownload.anrunlu.net/${res.data.key}`
+          avatar: process.env.QINIUCDN + res.data.key
         })
         if (res.success) {
           this.$q.notify({

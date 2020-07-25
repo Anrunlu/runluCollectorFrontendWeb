@@ -96,7 +96,7 @@ export default {
         desclt: this.cltId,
         origname: this.file.name,
         filetype: this.file.name.replace(/.+\./, ''),
-        fileUrl: `http://cltdownload.anrunlu.net/${uploadRes.key}`
+        fileUrl: process.env.QINIUCDN + uploadRes.key
       }
 
       try {
@@ -142,7 +142,7 @@ export default {
       const upPost = {
         origname: this.file.name,
         filetype: this.file.name.replace(/.+\./, ''),
-        fileUrl: `http://cltdownload.anrunlu.net/${uploadRes.key}`
+        fileUrl: process.env.QINIUCDN + uploadRes.key
       }
 
       try {
