@@ -82,8 +82,8 @@ export default {
   data () {
     return {
       model: {
-        email: 'test@test.com',
-        password: '123456'
+        email: '',
+        password: ''
       },
       isPwd: true,
       btnLoading: false
