@@ -242,6 +242,9 @@ export default {
   },
   methods: {
     async fetch () {
+      this.$q.loading.show({
+        message: '加载中...'
+      })
       const { data } = await getGroupDetail(this.id)
       this.managerIdList = []
       data.manager.reduce((pre, curr, index) => {
@@ -249,6 +252,7 @@ export default {
         return pre
       }, this.managerIdList)
       this.groupInfo = data
+      this.$q.loading.hide()
     },
     onclickRemoveGroup () {
       this.$q
