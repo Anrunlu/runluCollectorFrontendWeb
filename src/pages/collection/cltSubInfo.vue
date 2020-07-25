@@ -546,7 +546,7 @@ export default {
           }
         ]
       })
-      saveAs(this.zipFileUrl, `${this.cltTitle}.docx`)
+      saveAs(this.zipFileUrl, `${this.cltTitle}.zip`)
     },
     renameRulesRadio () {
       this.$q
