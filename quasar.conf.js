@@ -48,8 +48,11 @@ module.exports = function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       env: {
         API: ctx.dev
-          ? 'http://192.168.31.171:3008'
-          : 'http://localhost:3008'
+          ? 'http://localhost:3008'
+          : 'https://up.anrunlu.net/api',
+        SOCKET: ctx.dev
+          ? 'http://localhost:3008'
+          : 'https://up.anrunlu.net/'
       },
       // transpile: false,
 

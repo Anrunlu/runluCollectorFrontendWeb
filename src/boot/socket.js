@@ -4,6 +4,6 @@ import VueSocketIO from 'vue-socket.io'
 export default async ({ app, router, Vue }) => {
   Vue.use(new VueSocketIO({
     debug: true,
-    connection: process.env.API
+    connection: process.env.SOCKET
   }))
 }
