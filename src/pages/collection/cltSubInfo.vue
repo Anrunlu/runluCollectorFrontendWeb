@@ -469,7 +469,7 @@ export default {
       console.log(`收到结束信号${data}`)
       if (data.success) {
         this.$q.loading.hide()
-        this.zipFileUrl = 'http://cltdownload.anrunlu.net/' + data.key
+        this.zipFileUrl = 'https://cltdownload.anrunlu.net/' + data.key
         this.mkzipSuccessDialog = true
       } else {
         this.$q.loading.hide()
