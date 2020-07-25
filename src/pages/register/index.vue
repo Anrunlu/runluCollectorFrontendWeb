@@ -105,7 +105,7 @@
               </q-input>
 
               <div class="row q-mt-lg">
-                <q-btn
+                <!-- <q-btn
                   class="col-6"
                   label="注册"
                   type="submit"
@@ -115,7 +115,7 @@
                   :disable="disableRegisterBtn"
                   :loading="btnLoading"
                   @submit="onSubmit"
-                />
+                /> -->
                 <q-btn
                   label="已有账号？去登陆"
                   color="primary"
