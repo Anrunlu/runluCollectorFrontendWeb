@@ -50,7 +50,7 @@
 
       <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
+      <q-tab-panels v-model="tab">
         <q-tab-panel name="submitted">
           <q-table
             class="no-shadow"

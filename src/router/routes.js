@@ -63,6 +63,12 @@ const routes = [
         component: () => import('pages/group/detail.vue'),
         props: true,
         meta: { title: '群组详情' }
+      },
+      {
+        path: '/feedback',
+        component: () => import('pages/feedback/index.vue'),
+        props: true,
+        meta: { title: '群组详情' }
       }
     ]
   },

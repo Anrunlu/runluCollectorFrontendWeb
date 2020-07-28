@@ -33,7 +33,7 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated class="bg-grey-1">
+    <q-tab-panels v-model="tab" class="bg-grey-1">
       <q-tab-panel name="joinedGroups">
         <GroupList
           :data="joinedGroups"

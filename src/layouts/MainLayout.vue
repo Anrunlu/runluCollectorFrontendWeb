@@ -259,7 +259,7 @@ export default {
       links3: [
         { icon: 'notifications', text: '消息中心', to: '/me/notifications' },
         { icon: 'settings', text: '个人设置', to: '/me/settings' },
-        { icon: 'help', text: '帮助与反馈', to: '/faceback' }
+        { icon: 'help', text: '帮助与反馈', to: '/feedback' }
         // { icon: 'get_app', text: '客户端下载', to: '/' }
       ],
       createMenu: [

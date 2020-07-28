@@ -209,7 +209,7 @@ export default {
       ],
       pagination: {
         sortBy: 'username',
-        descending: true,
+        descending: false,
         rowsPerPage: 10
       }
     }
