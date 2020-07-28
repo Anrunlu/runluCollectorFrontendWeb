@@ -1,13 +1,14 @@
 <template>
   <q-layout>
     <q-page-container>
-      <q-page class="q-pa-md row justify-center bg-image">
+      <q-page class="q-py-md q-px-xs row justify-center bg-image">
         <q-card class="col-md-10 col-12">
           <q-card-section>
             <div class="row">
               <q-chip
                 class="glossy"
                 outline
+                square
                 size="lg"
                 :icon="
                   notice.type === 'announcement'
@@ -26,7 +27,24 @@
                 dense
                 square
                 outline
-                color="pink"
+                :color="
+                  notice.type === 'announcement'
+                    ? 'primary'
+                    : notice.type === 'ad'
+                    ? 'pink'
+                    : notice.type === 'notice'
+                    ? 'green'
+                    : 'teal'
+                "
+                :icon="
+                  notice.type === 'announcement'
+                    ? 'assignment'
+                    : notice.type === 'ad'
+                    ? 'forum'
+                    : notice.type === 'notice'
+                    ? 'notifications_none'
+                    : 'dehaze'
+                "
                 :label="
                   notice.type === 'announcement'
                     ? '公告'
@@ -41,7 +59,7 @@
                 dense
                 square
                 outline
-                color="primary"
+                color="deep-purple"
                 icon="rss_feed"
                 :label="notice.receiver"
               />
@@ -49,6 +67,7 @@
                 dense
                 square
                 outline
+                color="indigo"
                 icon="today"
                 :label="notice.create_time"
               />
@@ -56,7 +75,7 @@
           </q-card-section>
           <q-separator spaced inset />
           <q-card-section>
-            <div class="q-px-md" v-html="notice.content"></div>
+            <div class="q-px-xs" v-html="notice.content"></div>
           </q-card-section>
           <q-separator spaced inset />
           <div class="text-center text-grey q-pa-sm">
@@ -99,7 +118,6 @@ export default {
         message: '加载中...'
       })
       const { data } = await getNoticeDetail(this.id)
-      console.log(data)
       this.notice = formatNoticeBaseInfo(data)
       this.$q.loading.hide()
     }

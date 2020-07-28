@@ -86,8 +86,6 @@ export default {
       })
       const { data } = await getNoticeList()
       this.notices = formatNoticesBaseInfo(data)
-      console.log(this.notices)
-
       this.$q.loading.hide()
     }
   }
