@@ -48,10 +48,10 @@ module.exports = function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       env: {
         API: ctx.dev
-          ? 'http://localhost:3008'
+          ? 'http://192.168.31.171:3008'
           : 'https://up.anrunlu.net/api',
         SOCKET: ctx.dev
-          ? 'http://localhost:3008'
+          ? 'http://192.168.31.171:3008'
           : 'https://up.anrunlu.net/',
         QINIUCDN: 'https://cltdownload.anrunlu.net/'
       },

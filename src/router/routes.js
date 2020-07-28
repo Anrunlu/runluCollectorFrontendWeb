@@ -68,9 +68,22 @@ const routes = [
         path: '/feedback',
         component: () => import('pages/feedback/index.vue'),
         props: true,
-        meta: { title: '群组详情' }
+        meta: { title: '帮助与反馈' }
+      },
+      {
+        path: '/notice',
+        component: () => import('pages/notice/index.vue'),
+        props: true,
+        meta: { title: '消息中心' }
       }
     ]
+  },
+
+  {
+    path: '/notice/:id',
+    component: () => import('pages/notice/noticeDetail.vue'),
+    props: true,
+    meta: { isPublic: true, title: '消息详情' }
   },
 
   {
