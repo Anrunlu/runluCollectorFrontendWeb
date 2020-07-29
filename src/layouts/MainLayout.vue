@@ -50,19 +50,11 @@
           no-wrap
           color="primary"
           icon="add"
-          no-caps
-          label="Create"
+          label="新建"
           class="q-ml-sm q-px-md"
         >
-          <q-menu anchor="top right" self="top right">
+          <q-menu anchor="bottom right" self="top right">
             <q-list class="text-grey-8" style="min-width: 100px">
-              <q-item aria-hidden="true">
-                <q-item-section
-                  class="text-uppercase text-grey-7"
-                  style="font-size: 0.7rem"
-                  >Create New</q-item-section
-                >
-              </q-item>
               <q-item
                 v-for="menu in createMenu"
                 :key="menu.text"
@@ -86,10 +78,10 @@
           dense
           no-wrap
           color="primary"
-          icon="cloud_upload"
-          no-caps
-          label="Upload"
+          icon="topic"
+          label="任务列表"
           class="q-ml-sm q-px-md"
+          to='/collections/myTasks'
         />
 
         <q-space />
@@ -98,10 +90,10 @@
           <q-btn round dense flat color="text-grey-7" icon="apps" to="/">
             <q-tooltip>工作台</q-tooltip>
           </q-btn>
-          <q-btn round dense flat color="grey-8" icon="notifications">
-            <q-badge color="red" text-color="white" floating>
+          <q-btn round dense flat color="grey-8" icon="notifications" to="/notice">
+            <!-- <q-badge color="red" text-color="white" floating>
               2
-            </q-badge>
+            </q-badge> -->
             <q-tooltip>消息通知</q-tooltip>
           </q-btn>
 

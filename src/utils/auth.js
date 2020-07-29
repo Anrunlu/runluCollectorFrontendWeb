@@ -7,7 +7,7 @@ export function getToken () {
 }
 
 export function setToken (token) {
-  Cookies.set(TokenKey, token)
+  Cookies.set(TokenKey, token, { sameSite: 'Strict' })
 }
 
 export function removeToken () {
