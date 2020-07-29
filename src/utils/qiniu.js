@@ -4,7 +4,6 @@ import * as qiniu from 'qiniu-js'
 export async function qiniuFileUpLoad (cltId, username, file, that) {
   const { data } = await getUploadToken()
   const uploadToken = data.uploadToken
-  console.log('获取uptoken成功')
   return new Promise((resolve, reject) => {
     /* 上传文件 */
     // 上传前准备
@@ -37,7 +36,6 @@ export async function qiniuFileUpLoad (cltId, username, file, that) {
 export async function qiniuAvatarUpLoad (username, file) {
   const { data } = await getUploadToken()
   const uploadToken = data.uploadToken
-  console.log('获取uptoken成功')
   return new Promise((resolve, reject) => {
     /* 上传文件 */
     // 上传前准备

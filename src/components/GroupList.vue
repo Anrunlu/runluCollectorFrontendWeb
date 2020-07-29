@@ -139,11 +139,9 @@ export default {
       this.$router.push(`/groups/${row.id}`)
     },
     onClickRemoveGroup (groupBaseInfo) {
-      console.log(groupBaseInfo)
       this.$emit('removeGroup', groupBaseInfo)
     },
     onClickLeaveGroup (groupBaseInfo) {
-      console.log(groupBaseInfo)
       this.$emit('leaveGroup', groupBaseInfo)
     }
   }

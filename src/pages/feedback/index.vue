@@ -113,7 +113,6 @@ export default {
       setTimeout(() => {
         this.$router.replace('/')
       }, 3000)
-      console.log(this.feedback)
     }
   }
 }

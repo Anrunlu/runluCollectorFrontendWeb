@@ -445,11 +445,9 @@ export default {
   },
   sockets: {
     connect () {
-      console.log('connected')
     },
     mkzipStart: function (data) {
       // 监听message事件，方法是后台定义和提供的
-      console.log(`监听开始打包。。。${data}`)
       if (data.success) {
         this.$q.loading.show({
           spinner: QSpinnerGears,
@@ -466,7 +464,6 @@ export default {
       }
     },
     mkzipEnd: function (data) {
-      console.log(`收到结束信号${data}`)
       if (data.success) {
         this.$q.loading.hide()
         this.zipFileUrl = process.env.QINIUCDN + data.key
@@ -509,14 +506,12 @@ export default {
       this.$q.loading.hide()
     },
     onClickPackZip () {
-      console.log('按下打包下载')
       this.$socket.emit('mkzip', {
         cltId: this.id,
         renameRule: this.renameRule
       })
     },
     downloadSingleFile (postInfo) {
-      console.log(postInfo)
       let renameTemplate = ''
       if (this.renameRule === 1) {
         renameTemplate = `${postInfo.creator.username}-${postInfo.creator.nickname}`

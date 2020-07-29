@@ -148,7 +148,6 @@ export default {
   },
   created () {
     getOrgList().then(res => {
-      console.log(res.data)
       this.orgOptions = res.data
     })
   },

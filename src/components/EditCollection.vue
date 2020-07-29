@@ -218,8 +218,6 @@ export default {
 
     async onSubmit () {
       if (this.mode === 'create') {
-        console.log('创建')
-
         this.model.creator = this.userId
         this.model.org = this.orgId
         this.model.endtime = new Date(this.pickedtime)
@@ -255,7 +253,6 @@ export default {
         }
       } else if (this.mode === 'edit' && this.id) {
         // 编辑
-        console.log('编辑')
         const payload = {
           title: this.model.title,
           property: this.model.property,

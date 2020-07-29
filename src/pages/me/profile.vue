@@ -255,10 +255,8 @@ export default {
     },
     async savaAvatar (img) {
       const newAvatarFile = dataURItoBlob(img.toDataURL())
-      console.log(newAvatarFile)
       try {
         const res = await qiniuAvatarUpLoad(this.userDetails.username, newAvatarFile)
-        console.log(res)
         await setInfo({
           avatar: process.env.QINIUCDN + res.data.key
         })

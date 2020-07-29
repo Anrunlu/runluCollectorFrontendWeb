@@ -32,6 +32,5 @@ export function formatNoticesBaseInfo (noticesData) {
     pre.push(formatNoticeBaseInfo(curr))
     return pre
   }, newData)
-  console.log('cs', newData)
   return newData
 }
