@@ -46,6 +46,14 @@ export function leaveGroup (groupId) {
   })
 }
 
+export function kickOut (userId, groupId) {
+  return request({
+    url: '/groups/kickOut',
+    method: 'put',
+    params: { userId, groupId }
+  })
+}
+
 export function removeGroup (groupId) {
   return request({
     url: `/groups/remove/${groupId}`,

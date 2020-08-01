@@ -168,7 +168,7 @@
 
 <script>
 import { date } from 'quasar'
-import { getGroupDetail, removeGroup, setManager } from 'src/api/group'
+import { getGroupDetail, removeGroup, kickOut, setManager } from 'src/api/group'
 export default {
   props: ['id'],
   data () {
@@ -306,7 +306,7 @@ export default {
           persistent: true
         })
         .onOk(async () => {
-          await removeGroup(this.groupInfo.id)
+          await kickOut(userBaseInfo._id, this.groupInfo.id)
           this.$q.notify({
             type: 'info',
             position: 'center',
