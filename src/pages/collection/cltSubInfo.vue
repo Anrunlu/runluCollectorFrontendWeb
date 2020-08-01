@@ -167,7 +167,7 @@
                 color="secondary"
                 icon="notifications_active"
                 label="一键提醒"
-                @click="onClickPackZip"
+                @click="onClickSendNotifyToGroup"
               />
             </template>
 
@@ -208,7 +208,7 @@
             <template v-slot:body-cell-action="props">
               <q-td :props="props">
                 <div class="q-gutter-sm">
-                  <q-btn dense color="secondary" icon="notifications" />
+                  <q-btn dense color="secondary" icon="notifications" @click.stop="onClickSendNotifyToOne(props.row._id)" />
                 </div>
               </q-td>
             </template>
@@ -226,7 +226,7 @@
         <q-tab-panel name="all">
           <q-table
             class="no-shadow"
-            title="未提交"
+            title="全部"
             :data="all"
             :columns="allColumns"
             row-key="name"
@@ -235,14 +235,14 @@
             rows-per-page-label="单页条目数"
             no-data-label="暂无任务"
           >
-            <template v-slot:top-left>
+            <!-- <template v-slot:top-left>
               <q-btn
                 color="secondary"
                 icon="notifications_active"
                 label="一键提醒"
-                @click="onClickPackZip"
+                @click="onClickSendNotifyToGroup"
               />
-            </template>
+            </template> -->
 
             <template v-slot:top-right>
               <q-input
@@ -328,6 +328,7 @@
 <script>
 import { getCltSubInfo } from 'src/api/query'
 import { getCollectionInfo } from 'src/api/collection'
+import { sendNotifyToOne, sendNotifyToGroup } from 'src/api/message'
 import { formatSinglePostDetail } from '../../utils/format-post-data'
 import { saveAs } from 'file-saver'
 import { QSpinnerGears } from 'quasar'
@@ -504,6 +505,46 @@ export default {
       })
       this[subDataType] = data
       this.$q.loading.hide()
+    },
+    async onClickSendNotifyToOne (userId) {
+      await sendNotifyToOne(this.id, userId)
+      this.$q.notify({
+        message:
+          '提醒成功，请不要频繁发送',
+        color: 'positive',
+        position: 'center',
+        timeout: 5000,
+        avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+        actions: [
+          {
+            label: '知道了',
+            color: 'yellow',
+            handler: () => {
+              /* ... */
+            }
+          }
+        ]
+      })
+    },
+    async onClickSendNotifyToGroup () {
+      await sendNotifyToGroup(this.id, this.currgroup._id)
+      this.$q.notify({
+        message:
+          '提醒成功，请不要频繁发送',
+        color: 'positive',
+        position: 'center',
+        timeout: 10000,
+        avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+        actions: [
+          {
+            label: '知道了',
+            color: 'yellow',
+            handler: () => {
+              /* ... */
+            }
+          }
+        ]
+      })
     },
     onClickPackZip () {
       this.$socket.emit('mkzip', {
