@@ -113,9 +113,9 @@
                   </q-item-section>
                 </q-item>
                 <q-separator />
-                <q-item clickable class="GPL__menu-link">
+                <!-- <q-item clickable class="GPL__menu-link">
                   <q-item-section>帮助</q-item-section>
-                </q-item>
+                </q-item> -->
                 <q-item clickable class="GPL__menu-link">
                   <q-item-section @click="$router.push('/me/settings')"
                     >个人设置</q-item-section

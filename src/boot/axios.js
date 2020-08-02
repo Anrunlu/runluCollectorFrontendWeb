@@ -38,7 +38,7 @@ export default ({ app, router, store }) => {
           })
           switch (err.response.data.statusCode) {
             // 收集不存在或已被撤销
-            case 1400:
+            case 1404:
               router.push('/collections/myTasks')
               break
             // 非收集创建者，无法访问
@@ -46,8 +46,16 @@ export default ({ app, router, store }) => {
               router.push('/me/collections')
               break
             // 非征集对象，无法访问
-            case 1404:
+            case 1400:
               router.push('/collections/myTasks')
+              break
+            // 群组不存在或已被解散
+            case 3404:
+              router.push('/me/groups')
+              break
+            // 非群组成员或创建者，无法访问
+            case 3400:
+              router.push('/me/groups')
               break
           }
         }
