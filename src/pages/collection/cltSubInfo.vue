@@ -31,17 +31,17 @@
         align="justify"
         narrow-indicator
       >
-        <q-tab icon="done" name="submitted" label="已提交">
+        <q-tab icon="done" name="submitted" :ripple="false" label="已提交">
           <q-badge color="positive" floating transparent>{{
             submitted.length
           }}</q-badge>
         </q-tab>
-        <q-tab icon="clear" name="nosubmit" label="未提交">
+        <q-tab icon="clear" name="nosubmit" :ripple="false" label="未提交">
           <q-badge color="negative" floating transparent>{{
             unSubmitted.length
           }}</q-badge>
         </q-tab>
-        <q-tab icon="notes" name="all" label="全部">
+        <q-tab icon="notes" name="all" :ripple="false" label="全部">
           <q-badge color="primary" floating transparent>{{
             all.length
           }}</q-badge>
