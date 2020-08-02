@@ -25,6 +25,7 @@
 
       <template v-slot:top-right="props">
         <q-input
+          class="desktop-only"
           outlined
           dense
           debounce="300"
@@ -37,6 +38,7 @@
         </q-input>
 
         <q-btn
+          class="desktop-only"
           flat
           round
           dense

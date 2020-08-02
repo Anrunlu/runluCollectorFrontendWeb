@@ -10,7 +10,7 @@
       align="justify"
       narrow-indicator
     >
-      <q-tab icon="people" name="joinedGroups" label="我加入的">
+      <q-tab icon="people" name="joinedGroups" :ripple="false" label="我加入的">
         <q-badge color="primary" floating transparent>{{
           joinedGroups.length
         }}</q-badge>
@@ -18,13 +18,14 @@
       <q-tab
         icon="supervised_user_circle"
         name="createdGroups"
+        :ripple="false"
         label="我创建的"
       >
         <q-badge color="primary" floating transparent>{{
           createdGroups.length
         }}</q-badge>
       </q-tab>
-      <q-tab icon="record_voice_over" name="managedGroups" label="我管理的">
+      <q-tab icon="record_voice_over" name="managedGroups" :ripple="false" label="我管理的">
         <q-badge color="primary" floating transparent>{{
           managedGroups.length
         }}</q-badge>

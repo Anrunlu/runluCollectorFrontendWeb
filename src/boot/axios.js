@@ -36,6 +36,20 @@ export default ({ app, router, store }) => {
             type: 'negative',
             position: 'center'
           })
+          switch (err.response.data.statusCode) {
+            // 收集不存在或已被撤销
+            case 1400:
+              router.push('/collections/myTasks')
+              break
+            // 非收集创建者，无法访问
+            case 1401:
+              router.push('/me/collections')
+              break
+            // 非征集对象，无法访问
+            case 1404:
+              router.push('/collections/myTasks')
+              break
+          }
         }
       }
       return Promise.reject(err)

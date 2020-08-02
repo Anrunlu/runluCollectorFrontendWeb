@@ -10,8 +10,8 @@
       align="justify"
       narrow-indicator
     >
-      <q-tab icon="campaign" name="public" label="公告通知"></q-tab>
-      <q-tab icon="notifications_none" name="private" label="我的消息"> </q-tab>
+      <q-tab icon="campaign" name="public" :ripple="false" label="公告通知"></q-tab>
+      <q-tab icon="notifications_none" name="private" :ripple="false" label="我的消息"> </q-tab>
     </q-tabs>
     <q-separator />
 

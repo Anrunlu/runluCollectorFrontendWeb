@@ -10,17 +10,17 @@
       align="justify"
       narrow-indicator
     >
-      <q-tab icon="alarm" name="underwayTasks" label="进行中">
+      <q-tab icon="alarm" name="underwayTasks" :ripple="false" label="进行中">
         <q-badge color="positive" floating transparent>{{
           underwayTasks.length
         }}</q-badge>
       </q-tab>
-      <q-tab icon="alarm_on" name="closedTasks" label="已截止">
+      <q-tab icon="alarm_on" name="closedTasks" :ripple="false" label="已截止">
         <q-badge color="grey" floating transparent>{{
           closedTasks.length
         }}</q-badge>
       </q-tab>
-      <q-tab icon="notes" name="allTasks" label="全部">
+      <q-tab icon="notes" name="allTasks" :ripple="false" label="全部">
         <q-badge color="primary" floating transparent>{{
           allTasks.length
         }}</q-badge>
@@ -29,10 +29,10 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated class="bg-grey-1">
+    <q-tab-panels v-model="tab" class="bg-grey-1">
       <q-tab-panel name="underwayTasks" class="row justify-center q-gutter-md">
-        <div class="text-h5" v-if="underwayTasks.length === 0">
-          暂无进行中的任务
+        <div class="q-mt-xl q-pt-xl" v-if="underwayTasks.length === 0">
+          <img src="~assets/no-task.png" width="200rem" alt="">
         </div>
         <q-card
           class="col-md-3 col-11"
