@@ -86,7 +86,8 @@ export default {
       const uploadRes = await qiniuFileUpLoad(
         this.cltId,
         this.$store.getters['user/username'],
-        this.file
+        this.file,
+        this
       )
       // 同步数据到数据库
       const post = {
@@ -133,7 +134,8 @@ export default {
       const uploadRes = await qiniuFileUpLoad(
         this.cltId,
         this.$store.getters['user/username'],
-        this.file
+        this.file,
+        this
       )
 
       // 同步数据到数据库
