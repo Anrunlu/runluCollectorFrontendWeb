@@ -2,7 +2,7 @@
   <q-layout>
     <q-page-container>
       <q-page class="q-py-md q-px-xs row justify-center bg-image">
-        <q-card class="col-md-10 col-12">
+        <q-card class="col-md-10 col-12" style="height:100%">
           <q-card-section>
             <div class="row">
               <q-chip
@@ -75,12 +75,9 @@
           </q-card-section>
           <q-separator spaced inset />
           <q-card-section>
-            <div class="q-px-xs" v-html="notice.content"></div>
+            <div class="q-px-xs content" v-html="notice.content"></div>
           </q-card-section>
-          <q-separator spaced inset />
-          <div class="text-center text-grey q-pa-sm">
-            <span>润鲁收集系统</span>
-          </div>
+          <!-- <q-separator spaced inset /> -->
         </q-card>
         <q-page-sticky
           class="desktop-only"
@@ -124,7 +121,24 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0px;
+}
+a {
+  text-decoration: none;
+}
+.content {
+  width: 100%;
+  height: auto;
+  word-wrap: break-word;
+  word-break: break-all;
+}
 .bg-image {
   background-image: linear-gradient(135deg, #7028e4 0%, #e5b2ca 100%);
 }
