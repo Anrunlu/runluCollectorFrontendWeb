@@ -164,6 +164,7 @@
           >
             <template v-slot:top-left>
               <q-btn
+                v-if="unSubmitted.length>0"
                 color="secondary"
                 icon="notifications_active"
                 label="一键提醒"
