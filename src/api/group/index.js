@@ -15,6 +15,21 @@ export function getGroupDetail (id) {
   })
 }
 
+export function getDingTalkSettings (id) {
+  return request({
+    url: `/groups/ddsetings/${id}`,
+    method: 'get'
+  })
+}
+
+export function setDingTalkSettings (id, dingTalkSettingsDto) {
+  return request({
+    url: `/groups/ddsetings/${id}`,
+    method: 'put',
+    data: dingTalkSettingsDto
+  })
+}
+
 export function createGroup (createGroupDto) {
   return request({
     url: '/groups',

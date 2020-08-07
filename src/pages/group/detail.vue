@@ -151,7 +151,14 @@
               </q-item>
             </q-list>
           </q-card-section>
-          <q-card-actions vertical align="right">
+          <q-card-actions align="right">
+            <q-btn
+              v-if="roles.includes('creator')"
+              icon="chat"
+              color="green"
+              label="设置钉钉机器人"
+              @click="onclickSetDingTalkRobot"
+            />
             <q-btn
               v-if="roles.includes('creator')"
               icon="delete_forever"
@@ -163,16 +170,55 @@
         </q-card>
       </div>
     </div>
+    <q-dialog v-model="dingtalkRobotSettingDig">
+      <q-card style="width:500px">
+        <q-card-section>
+          <div class="text-h5">设置钉钉通知机器人</div>
+        </q-card-section>
+        <q-card-section>
+          <q-form @submit="onSubmitDingTalkRobotSetting" class="q-gutter-md">
+            <q-input
+              v-model="dingtalkRobotSettings.ddwebhook"
+              type="text"
+              label="Webhook"
+              hint="输入钉钉群自定义机器人的webhook"
+            />
+            <q-input
+              v-model="dingtalkRobotSettings.ddsecret"
+              type="password"
+              label="Secret"
+              hint="输入钉钉群自定义机器人的secret"
+            />
+            <div>
+              <q-btn label="确定" type="submit" color="primary" />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import { date } from 'quasar'
-import { getGroupDetail, removeGroup, kickOut, setManager } from 'src/api/group'
+import {
+  getDingTalkSettings,
+  setDingTalkSettings,
+  getGroupDetail,
+  removeGroup,
+  kickOut,
+  setManager
+} from 'src/api/group'
+
 export default {
   props: ['id'],
   data () {
     return {
+      dingtalkRobotSettingDig: false,
+      dingtalkRobotSettings: {
+        ddwebhook: '',
+        ddsecret: ''
+      },
       filter: '',
       groupInfo: {
         creator: {}
@@ -322,6 +368,19 @@ export default {
             timeout: 1000
           })
         })
+    },
+    async onclickSetDingTalkRobot () {
+      const { data } = await getDingTalkSettings(this.id)
+      this.dingtalkRobotSettings = data
+      this.dingtalkRobotSettingDig = true
+    },
+    async onSubmitDingTalkRobotSetting () {
+      await setDingTalkSettings(this.id, this.dingtalkRobotSettings)
+      this.$q.notify({
+        type: 'positive',
+        message: '设置成功'
+      })
+      this.dingtalkRobotSettingDig = false
     },
     async onclickSetManager (userBaseInfo) {
       await setManager(this.groupInfo.id, userBaseInfo.id, 'set')

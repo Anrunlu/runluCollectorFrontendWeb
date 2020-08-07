@@ -164,12 +164,20 @@
           >
             <template v-slot:top-left>
               <q-btn
-                v-if="unSubmitted.length>0"
+                v-if="unSubmitted.length > 0"
                 color="secondary"
                 icon="notifications_active"
                 label="一键提醒"
                 @click="onClickSendNotifyToGroup"
-              />
+              >
+                <q-tooltip
+                  anchor="center right"
+                  self="center left"
+                  :offset="[10, 10]"
+                >
+                  发送提醒到钉钉群 <q-icon name="send" />
+                </q-tooltip>
+              </q-btn>
             </template>
 
             <template v-slot:top-right>
@@ -209,7 +217,13 @@
             <template v-slot:body-cell-action="props">
               <q-td :props="props">
                 <div class="q-gutter-sm">
-                  <q-btn dense color="secondary" icon="notifications" @click.stop="onClickSendNotifyToOne(props.row._id)" />
+                  <q-btn
+                    dense
+                    color="secondary"
+                    icon="notifications"
+                    @click.stop="onClickSendNotifyToOne(props.row._id)"
+                  >
+                  </q-btn>
                 </div>
               </q-td>
             </template>
@@ -329,7 +343,7 @@
 <script>
 import { getCltSubInfo } from 'src/api/query'
 import { getCollectionInfo } from 'src/api/collection'
-import { sendNotifyToOne, sendNotifyToGroup } from 'src/api/message'
+import { sendNotifyToOne, sendDingTalkRemindMsg } from 'src/api/message'
 import { formatSinglePostDetail } from '../../utils/format-post-data'
 import { saveAs } from 'file-saver'
 import { QSpinnerGears } from 'quasar'
@@ -446,8 +460,7 @@ export default {
     }
   },
   sockets: {
-    connect () {
-    },
+    connect () {},
     mkzipStart: function (data) {
       // 监听message事件，方法是后台定义和提供的
       if (data.success) {
@@ -510,12 +523,11 @@ export default {
     async onClickSendNotifyToOne (userId) {
       await sendNotifyToOne(this.id, userId)
       this.$q.notify({
-        message:
-          '提醒成功，请不要频繁发送',
+        message: '提醒成功，请不要频繁发送',
         color: 'positive',
         position: 'center',
-        timeout: 5000,
-        avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+        timeout: 4000,
+        avatar: 'https://cltdownload.anrunlu.net/2019414172-1595575822881.png',
         actions: [
           {
             label: '知道了',
@@ -528,14 +540,13 @@ export default {
       })
     },
     async onClickSendNotifyToGroup () {
-      await sendNotifyToGroup(this.id, this.currgroup._id)
+      await sendDingTalkRemindMsg(this.id, this.currgroup._id)
       this.$q.notify({
-        message:
-          '提醒成功，请不要频繁发送',
+        message: '提醒成功，请不要频繁发送',
         color: 'positive',
         position: 'center',
         timeout: 10000,
-        avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+        avatar: 'https://cltdownload.anrunlu.net/2019414172-1595575822881.png',
         actions: [
           {
             label: '知道了',
