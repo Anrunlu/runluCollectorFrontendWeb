@@ -71,9 +71,3 @@ Nodejs：v14.60 +
 
 [润鲁收集系统管理端使用说明](https://www.yuque.com/docs/share/b0bba4ec-7f29-48a2-b55b-d2f6578b027b?#)
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
