@@ -69,5 +69,4 @@ Nodejs：v14.60 +
 
 [润鲁收集系统客户端使用说明](https://www.yuque.com/docs/share/6a573a3c-5071-46f9-a300-4878841b23aa?#)
 
-[润鲁收集系统管理端使用说明](https://www.yuque.com/docs/share/b0bba4ec-7f29-48a2-b55b-d2f6578b027b?#)
 
